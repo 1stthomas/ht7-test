@@ -1,0 +1,40 @@
+{
+    "name": "ht7/ht7-test",
+    "type": "library",
+    "description": "A PHP library with several classes to manage tests for the php unit library",
+    "keywords": ["php", "ht7", "test", "php-unit"],
+    "homepage": "https://github.com/1stthomas/ht7-test",
+    "license": "GNU General Public License v3.0",
+    "authors": [
+        {
+            "name": "1stthomas",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Ht7\\Test\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ht7\\Test\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "support": {
+        "source": "https://github.com/1stthomas/ht7-test"
+    },
+    "require": {
+        "php": "^7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
