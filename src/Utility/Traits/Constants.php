@@ -16,36 +16,43 @@ trait Constants
 {
 
     /**
-     * Get the defined constants defined by this class.
+     * Get the constants defined by this class or its ancestors.
      *
-     * @return  array           Assoc array with the constant names as key and
-     *                          the corresponding values as values.
+     * @param   boolean     $includeAncestors   True if also constants from anscestors should be included.
+     * @return  array                           Assoc array with the constant names as key and
+     *                                          the corresponding values as values.
      * @link https://stackoverflow.com/questions/956401/can-i-get-consts-defined-on-a-php-class
+     * @todo    If someone reassigns a constant in a child class, setting
+     *          <code>$icludeAncestors = false</code> could produce unexpected results.
      */
-    public static function getConstants()
+    public static function getConstants($includeAncestors = true)
     {
         $reflection = new ReflectionClass(get_called_class());
+        // Get an assoc array of all constants, also the ones defined by ancestors.
         $constants = $reflection->getConstants();
+        // Look for a parent class.
         $parent = $reflection->getParentClass();
 
-        while (is_object($parent)) {
-            $constants = array_merge($constants, $parent->getConstants());
-
-            $parent = $parent->getParentClass();
+        if (!$includeAncestors && is_object($parent)) {
+            // Get all constants of the parent with its ancestors.
+            $constantsParent = $parent->getConstants();
+            // Remove the constants from the ancestors.
+            $constants = array_diff_assoc($constants, $constantsParent);
         }
 
         return $constants;
     }
 
     /**
-     * Get all constants defined by this class with a specific prefix.
+     * Get all constants defined by this class or its ancestors with a specific prefix.
      *
-     * @param   string      $type       The prefix to search for.
+     * @param   string      $type               The prefix to search for.
+     * @param   boolean     $includeAncestors   True if also constants from anscestors should be included.
      * @return  array
      */
-    public static function getConstantsByType($type)
+    public static function getConstantsByType($type, $includeAncestors = true)
     {
-        $constantsAll = static::getConstants();
+        $constantsAll = static::getConstants($includeAncestors);
 
         if (!empty($type)) {
             $constants = [];

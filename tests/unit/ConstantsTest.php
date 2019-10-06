@@ -81,6 +81,48 @@ class ConstantsTest extends TestCase
                     'class' => ConstantsChild1::class,
                     'comment' => 'Child',
                     'compareData' => [
+                        'HT7_TEST_TESTS_CTYPE_B3' => ConstantsChild1::HT7_TEST_TESTS_CTYPE_B3
+                    ],
+                    'methodName' => 'getConstantsByType',
+                    'methodType' => 'static',
+                    'options' => [],
+                    'parameters' => ['HT7_TEST_TESTS_CTYPE_B3']
+                ]
+            ],
+            [
+                [
+                    'assertion' => 'eq',
+                    'class' => ConstantsChild1::class,
+                    'comment' => 'Child',
+                    'compareData' => [
+                        'HT7_TEST_TESTS_CTYPE_B1' => ConstantsChild1::HT7_TEST_TESTS_CTYPE_B1,
+                        'HT7_TEST_TESTS_CTYPE_B2' => ConstantsChild1::HT7_TEST_TESTS_CTYPE_B2,
+                        'HT7_TEST_TESTS_CTYPE_B3' => ConstantsChild1::HT7_TEST_TESTS_CTYPE_B3
+                    ],
+                    'methodName' => 'getConstantsByType',
+                    'methodType' => 'static',
+                    'options' => [],
+                    'parameters' => ['HT7_TEST_TESTS_CTYPE_', false]
+                ]
+            ],
+            [
+                [
+                    'assertion' => 'eq',
+                    'class' => ConstantsChild1::class,
+                    'comment' => 'Child',
+                    'compareData' => [],
+                    'methodName' => 'getConstantsByType',
+                    'methodType' => 'static',
+                    'options' => [],
+                    'parameters' => ['HT7_TEST_TESTS_CTYPE_A', false]
+                ]
+            ],
+            [
+                [
+                    'assertion' => 'eq',
+                    'class' => ConstantsChild1::class,
+                    'comment' => 'Child',
+                    'compareData' => [
                         'HT7_TEST_TESTS_CTYPE_A1' => ConstantsChild1::HT7_TEST_TESTS_CTYPE_A1,
                         'HT7_TEST_TESTS_CTYPE_A2' => ConstantsChild1::HT7_TEST_TESTS_CTYPE_A2,
                         'HT7_TEST_TESTS_CTYPE_A3' => ConstantsChild1::HT7_TEST_TESTS_CTYPE_A3
@@ -119,6 +161,22 @@ class ConstantsTest extends TestCase
             [
                 [
                     'assertion' => 'eq',
+                    'class' => ConstantsChild1::class,
+                    'comment' => 'Child',
+                    'compareData' => [
+                        'HT7_TEST_TESTS_CTYPE_B1' => ConstantsChild1::HT7_TEST_TESTS_CTYPE_B1,
+                        'HT7_TEST_TESTS_CTYPE_B2' => ConstantsChild1::HT7_TEST_TESTS_CTYPE_B2,
+                        'HT7_TEST_TESTS_CTYPE_B3' => ConstantsChild1::HT7_TEST_TESTS_CTYPE_B3
+                    ],
+                    'methodName' => 'getConstants',
+                    'methodType' => 'static',
+                    'options' => [],
+                    'parameters' => ['includeAncestors' => false]
+                ]
+            ],
+            [
+                [
+                    'assertion' => 'eq',
                     'class' => ConstantsParent::class,
                     'comment' => 'Parent',
                     'compareData' => [
@@ -147,7 +205,7 @@ class ConstantsTest extends TestCase
         $methodName = $data['methodName'];
 
         if (!empty($data['methodType'] && $data['methodType'] === 'static')) {
-            $testValue = call_user_func([$testObj, $methodName], $data['parameters']);
+            $testValue = call_user_func_array([$testObj, $methodName], $data['parameters']);
         } else {
             $testValue = $testObj->$methodName();
         }
