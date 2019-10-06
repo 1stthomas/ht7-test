@@ -195,20 +195,29 @@ class ConstantsTest extends TestCase
 
     protected function makeHt7Test(array $data)
     {
-        if (!empty($data['exception']) && $data['exception']) {
-            $this->expectException(InvalidArgumentException::class);
+        if (!empty($data['exception'])) {
+            $this->expectException($data['exception']);
         }
 
 //        print_r($data);
 
-        $testObj = new $data['class']();
-        $methodName = $data['methodName'];
-
-        if (!empty($data['methodType'] && $data['methodType'] === 'static')) {
-            $testValue = call_user_func_array([$testObj, $methodName], $data['parameters']);
+        if ($data['class'] === 'object') {
+            $testObj = $this->object;
         } else {
-            $testValue = $testObj->$methodName();
+            $testObj = new $data['class']();
         }
+
+        if (!empty($data['class_tasks'])) {
+            foreach ($data['class_tasks'] as $task) {
+                if (!empty($task['method'])) {
+                    $parameters = empty($task['parameters']) ? [] : $task['parameters'];
+
+                    call_user_func_array([$testObj, $task['method']], $parameters);
+                }
+            }
+        }
+
+        $testValue = call_user_func_array([$testObj, $data['methodName']], $data['parameters']);
 
         if ($data['assertion'] === 'eq') {
             $this->assertEquals($testValue, $data['compareData']);
