@@ -9,6 +9,7 @@ use \ReflectionClass;
  *
  * @author      Thomas Plüss
  * @since       0.0.1
+ * @version     0.0.1
  * @copyright (c) 2019, Thomas Pluess
  * @license http://URL name
  */
@@ -21,6 +22,7 @@ trait Constants
      * @param   boolean     $includeAncestors   True if also constants from anscestors should be included.
      * @return  array                           Assoc array with the constant names as key and
      *                                          the corresponding values as values.
+     * @since   0.0.1
      * @link https://stackoverflow.com/questions/956401/can-i-get-consts-defined-on-a-php-class
      * @todo    If someone reassigns a constant in a child class, setting
      *          <code>$icludeAncestors = false</code> could produce unexpected results.
@@ -49,6 +51,7 @@ trait Constants
      * @param   string      $type               The prefix to search for.
      * @param   boolean     $includeAncestors   True if also constants from anscestors should be included.
      * @return  array
+     * @since   0.0.1
      */
     public static function getConstantsByType($type, $includeAncestors = true)
     {

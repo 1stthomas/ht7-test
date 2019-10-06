@@ -2,15 +2,17 @@
 
 namespace Ht7\Test\Tests;
 
-use \InvalidArgumentException;
 use \PHPUnit\Framework\TestCase;
 use \Ht7\Test\Tests\Utility\Traits\ConstantsParent;
 use \Ht7\Test\Tests\Utility\Traits\ConstantsChild1;
 
 /**
- * Description of OrOptionsFactory
+ * Test class for the Constants trait.
  *
- * @author 1stthomas
+ * @author      Thomas Pluess
+ * @since       0.0.1
+ * @version     0.0.1
+ * @copyright (c) 2019, Thomas Pluess
  */
 class ConstantsTest extends TestCase
 {
@@ -70,7 +72,6 @@ class ConstantsTest extends TestCase
                         'HT7_TEST_TESTS_CTYPE_B3' => ConstantsChild1::HT7_TEST_TESTS_CTYPE_B3
                     ],
                     'methodName' => 'getConstantsByType',
-                    'methodType' => 'static',
                     'options' => [],
                     'parameters' => ['HT7_TEST_TESTS_CTYPE_B']
                 ]
@@ -84,7 +85,6 @@ class ConstantsTest extends TestCase
                         'HT7_TEST_TESTS_CTYPE_B3' => ConstantsChild1::HT7_TEST_TESTS_CTYPE_B3
                     ],
                     'methodName' => 'getConstantsByType',
-                    'methodType' => 'static',
                     'options' => [],
                     'parameters' => ['HT7_TEST_TESTS_CTYPE_B3']
                 ]
@@ -100,7 +100,6 @@ class ConstantsTest extends TestCase
                         'HT7_TEST_TESTS_CTYPE_B3' => ConstantsChild1::HT7_TEST_TESTS_CTYPE_B3
                     ],
                     'methodName' => 'getConstantsByType',
-                    'methodType' => 'static',
                     'options' => [],
                     'parameters' => ['HT7_TEST_TESTS_CTYPE_', false]
                 ]
@@ -112,7 +111,6 @@ class ConstantsTest extends TestCase
                     'comment' => 'Child',
                     'compareData' => [],
                     'methodName' => 'getConstantsByType',
-                    'methodType' => 'static',
                     'options' => [],
                     'parameters' => ['HT7_TEST_TESTS_CTYPE_A', false]
                 ]
@@ -128,7 +126,6 @@ class ConstantsTest extends TestCase
                         'HT7_TEST_TESTS_CTYPE_A3' => ConstantsChild1::HT7_TEST_TESTS_CTYPE_A3
                     ],
                     'methodName' => 'getConstantsByType',
-                    'methodType' => 'static',
                     'options' => [],
                     'parameters' => ['HT7_TEST_TESTS_CTYPE_A']
                 ]
@@ -153,7 +150,6 @@ class ConstantsTest extends TestCase
                         'HT7_TEST_TESTS_CTYPE_B3' => ConstantsChild1::HT7_TEST_TESTS_CTYPE_B3
                     ],
                     'methodName' => 'getConstants',
-                    'methodType' => 'static',
                     'options' => [],
                     'parameters' => []
                 ]
@@ -169,7 +165,6 @@ class ConstantsTest extends TestCase
                         'HT7_TEST_TESTS_CTYPE_B3' => ConstantsChild1::HT7_TEST_TESTS_CTYPE_B3
                     ],
                     'methodName' => 'getConstants',
-                    'methodType' => 'static',
                     'options' => [],
                     'parameters' => ['includeAncestors' => false]
                 ]
@@ -185,7 +180,6 @@ class ConstantsTest extends TestCase
                         'HT7_TEST_TESTS_CTYPE_A3' => ConstantsParent::HT7_TEST_TESTS_CTYPE_A3
                     ],
                     'methodName' => 'getConstants',
-                    'methodType' => 'static',
                     'options' => [],
                     'parameters' => []
                 ]
