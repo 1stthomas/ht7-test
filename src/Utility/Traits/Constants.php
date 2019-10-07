@@ -16,6 +16,9 @@ use \ReflectionClass;
 trait Constants
 {
 
+    private static $cacheConstants;
+    private static $cacheIncludeAncestors;
+
     /**
      * Get the constants defined by this class or its ancestors.
      *
@@ -29,17 +32,33 @@ trait Constants
      */
     public static function getConstants($includeAncestors = true)
     {
-        $reflection = new ReflectionClass(get_called_class());
-        // Get an assoc array of all constants, also the ones defined by ancestors.
-        $constants = $reflection->getConstants();
-        // Look for a parent class.
-        $parent = $reflection->getParentClass();
+        $cache = static::getCacheConstants();
 
-        if (!$includeAncestors && is_object($parent)) {
-            // Get all constants of the parent with its ancestors.
-            $constantsParent = $parent->getConstants();
-            // Remove the constants from the ancestors.
-            $constants = array_diff_assoc($constants, $constantsParent);
+        $cacheC = $cache[0] === null ? [] : $cache[0];
+        $cacheIA = $cache[1] === null ? [] : $cache[1];
+
+        $calledClass = get_called_class();
+
+        if (!array_key_exists($calledClass, $cacheC) || $cacheIA[$calledClass] !== $includeAncestors) {
+            $reflection = new ReflectionClass($calledClass);
+            // Get an assoc array of all constants, also the ones defined by ancestors.
+            $constants = $reflection->getConstants();
+
+            if (!$includeAncestors) {
+                // Look for a parent class.
+                $parent = $reflection->getParentClass();
+
+                if (is_object($parent)) {
+                    // Get all constants of the parent with its ancestors.
+                    $constantsParent = $parent->getConstants();
+                    // Remove the constants from the ancestors.
+                    $constants = array_diff_assoc($constants, $constantsParent);
+                }
+            }
+
+            static::setCacheConstants($calledClass, $constants, $includeAncestors);
+        } else {
+            $constants = $cacheC[$calledClass];
         }
 
         return $constants;
@@ -74,6 +93,20 @@ trait Constants
         }
 
         return $constants;
+    }
+
+    protected static function getCacheConstants()
+    {
+        return [
+            self::$cacheConstants,
+            self::$cacheIncludeAncestors
+        ];
+    }
+
+    protected static function setCacheConstants($calledClass, $constants, $includeAncestors)
+    {
+        self::$cacheConstants[$calledClass] = $constants;
+        self::$cacheIncludeAncestors[$calledClass] = $includeAncestors;
     }
 
 }
