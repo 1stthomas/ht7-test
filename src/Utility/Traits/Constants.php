@@ -32,7 +32,7 @@ trait Constants
      */
     public static function getConstants($includeAncestors = true)
     {
-        $cache = static::getCacheConstants();
+        $cache = self::getCacheConstants();
 
         $cacheC = $cache[0] === null ? [] : $cache[0];
         $cacheIA = $cache[1] === null ? [] : $cache[1];
@@ -56,7 +56,7 @@ trait Constants
                 }
             }
 
-            static::setCacheConstants($calledClass, $constants, $includeAncestors);
+            self::setCacheConstants($calledClass, $constants, $includeAncestors);
         } else {
             $constants = $cacheC[$calledClass];
         }
@@ -95,7 +95,14 @@ trait Constants
         return $constants;
     }
 
-    protected static function getCacheConstants()
+    /**
+     * Get the constants cache.
+     *
+     * @return  array                   Indexed array with <code>self::$cacheConstants</code>
+     *                                  on the first position, followed by
+     *                                  <code>self::cacheIncludeAncestors</code>.
+     */
+    private static function getCacheConstants()
     {
         return [
             self::$cacheConstants,
@@ -103,7 +110,17 @@ trait Constants
         ];
     }
 
-    protected static function setCacheConstants($calledClass, $constants, $includeAncestors)
+    /**
+     * Set the constants cache.
+     *
+     * @param   string  $calledClass    The full qualified class name of the
+     *                                  calling class.
+     * @param   array   $constants      Assoc array with the constant name as
+     *                                  key and the correpsonding value as value.
+     * @param   boolean $includeAncestors   Flag to control if the constants from
+     *                                  ancestors should be added too (true).
+     */
+    private static function setCacheConstants($calledClass, $constants, $includeAncestors)
     {
         self::$cacheConstants[$calledClass] = $constants;
         self::$cacheIncludeAncestors[$calledClass] = $includeAncestors;
