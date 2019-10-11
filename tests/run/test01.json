@@ -1,0 +1,75 @@
+{
+    "start": [
+        {
+            "class": "\\Ht7\\Test\\Model\\Instance",
+            "id": 1111,
+            "parameters": [{
+                    "class": "\\InvalidArgumentException",
+                    "id": 2111
+                }],
+            "task": "instance"
+        }
+    ],
+    "methods": {
+        "testConstructor": {
+            "run1": [
+                {
+                    "class": "\\Ht7\\Test\\Model\\Exc",
+                    "id": 1112,
+                    "parameters": [[]],
+                    "task": "instance"
+                },
+                {
+                    "id": 1113,
+                    "instance": 1112,
+                    "name": "getClass",
+                    "task": "method",
+                    "task-spec": "get"
+                },
+                {
+                    "id": 1112,
+                    "type": "eq",
+                    "task": "assertion",
+                    "valueAsserted": "{id:1113}",
+                    "valueExpected": null
+                }
+            ],
+            "run2": [
+                {
+                    "id": 1212,
+                    "instance": 1111,
+                    "name": "getClass",
+                    "task": "method",
+                    "task-spec": "get"
+                },
+                {
+                    "type": "eq",
+                    "task": "assertion",
+                    "valueAsserted": "{id:1212}",
+                    "valueExpected": "\\InvalidArgumentException"
+                },
+                {
+                    "instance": 1111,
+                    "name": "setClass",
+                    "parameters": ["\\Ht7\\Test\\Model\\Exc"],
+                    "task": "method",
+                    "task-spec": "void"
+                },
+                {
+                    "id": 1213,
+                    "instance": 1111,
+                    "name": "getClass",
+                    "task": "method",
+                    "task-spec": "get"
+                },
+                {
+                    "type": "eq",
+                    "task": "assertion",
+                    "valueAsserted": "{id:1213}",
+                    "valueExpected": "\\Ht7\\Test\\Model\\Exc"
+                }
+            ]
+        }
+    },
+    "finish": []
+}
