@@ -72,15 +72,19 @@ class Initializer
         Task::handleTasks($data);
     }
 
-    public function setUp(TestCase $tc,
-            $path)
+    public static function reset()
+    {
+        self::$instance = null;
+    }
+
+    public function setUp(TestCase $tc, $path)
     {
         if (!empty($this->getTestClassTask('methods'))) {
             return;
         }
 
         if ($tc === null) {
-            $e = 'The test case clase must not be null.';
+            $e = 'The test case class must not be null.';
 
             throw InvalidArgumentException($e);
         } elseif (!is_string($path)) {
@@ -99,8 +103,7 @@ class Initializer
         $this->setupTestMethods($arr);
     }
 
-    protected function addTestClassTasks($name,
-            $tasks)
+    protected function addTestClassTasks($name, $tasks)
     {
         if (isset($this->testClassTasks[$name])) {
             $this->testClassTasks[$name] = $tasks;
