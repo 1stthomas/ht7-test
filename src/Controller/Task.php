@@ -8,6 +8,7 @@ use \Ht7\Test\Container\IStorage;
 use \Ht7\Test\Container\Tasks;
 use \Ht7\Test\Container\Variables;
 use \Ht7\Test\Model\Assertion;
+use \Ht7\Test\Model\Container;
 use \Ht7\Test\Model\Exc;
 use \Ht7\Test\Model\Instance;
 use \Ht7\Test\Model\MethodGet;
@@ -98,6 +99,8 @@ class Task
 
         if ($taskName === 'assertion') {
             $task = new Assertion($data);
+        } elseif ($taskName === 'container') {
+            $task = new Container($data);
         } elseif ($taskName === 'exception') {
             $task = new Exc($data);
         } elseif ($taskName === 'instance') {
@@ -155,6 +158,11 @@ class Task
             } else {
                 call_user_func_array([TestCase::class, $definitions['method']], [$asserted]);
             }
+        } elseif ($className === Container::class) {
+            $id = $task->getId();
+            $value = $task->getValue();
+
+            static::getStorage()->addVariable($id, $value);
         } elseif ($className === Exc::class) {
             static::getTestCase()->expectException($task->getClass());
         } elseif ($className === Instance::class) {

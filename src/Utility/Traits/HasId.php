@@ -43,7 +43,7 @@ trait HasId
         } elseif (is_int($id)) {
             $this->id = $id;
         } elseif (is_string($id)) {
-            $this->id = trim($id, ['{id:', '}']);
+            $this->id = rtrim(ltrim($id, '{id:'), '}');
         } else {
             $e = 'Unsupported datatype ' . gettype($id) . '.';
 

@@ -101,8 +101,7 @@
                     "class": "\\Ht7\\Test\\Tests\\Utility\\Model\\ObjTestWithPublicVariable",
                     "id": 1311,
                     "parameters": [{
-                            "testProtected": "Test String..",
-                            "testPublic": "Test String public.."
+                            "testProtected": "Test String.."
                         }],
                     "task": "instance"
                 },
@@ -114,10 +113,35 @@
                     "task-spec": "get"
                 },
                 {
-                    "type": "eq",
                     "task": "assertion",
+                    "type": "eq",
                     "valueAsserted": "{id:1312}",
                     "valueExpected": null
+                },
+                {
+                    "id": "{id:1411}",
+                    "task": "container",
+                    "value": "Test Value über Container"
+                },
+                {
+                    "id": 1411,
+                    "instance": 1311,
+                    "name": "testPublic",
+                    "task": "property",
+                    "task-spec": "set"
+                },
+                {
+                    "id": 1412,
+                    "instance": 1311,
+                    "name": "testPublic",
+                    "task": "property",
+                    "task-spec": "get"
+                },
+                {
+                    "task": "assertion",
+                    "type": "eq",
+                    "valueAsserted": "{id:1412}",
+                    "valueExpected": "Test Value über Container"
                 }
             ]
         }
