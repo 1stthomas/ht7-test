@@ -3,7 +3,6 @@
 namespace Ht7\Test\Model;
 
 use \InvalidArgumentException;
-use \PHPUnit\Framework\TestCase;
 use \Ht7\Test\Model\AbstractLoadable;
 use \Ht7\Test\Utility\Traits\HasId;
 
@@ -642,8 +641,7 @@ class Assertion extends AbstractLoadable implements ITask
      *                                      constants. This property can also be
      *                                      committed by first parameter.
      */
-    public function __construct(array $data = [],
-            $type = self::ASSERT_EQUALS)
+    public function __construct(array $data = [], $type = self::ASSERT_EQUALS)
     {
         if (!isset($data['type'])) {
             $data['type'] = $type;

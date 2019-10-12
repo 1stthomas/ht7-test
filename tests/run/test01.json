@@ -68,6 +68,57 @@
                     "valueAsserted": "{id:1213}",
                     "valueExpected": "\\Ht7\\Test\\Model\\Exc"
                 }
+            ],
+            "run3": [
+                {
+                    "class": "InvalidArgumentException",
+                    "task": "exception"
+                },
+                {
+                    "class": "\\Ht7\\Test\\Tests\\Utility\\Model\\ObjTestWithPublicVariable",
+                    "id": 1311,
+                    "parameters": [{
+                            "testProtected": "Test String.."
+                        }],
+                    "task": "instance"
+                },
+                {
+                    "id": 1312,
+                    "instance": 1311,
+                    "name": "testPublic",
+                    "task": "property",
+                    "task-spec": "get"
+                },
+                {
+                    "type": "eq",
+                    "task": "assertion",
+                    "valueAsserted": "{id:1312}",
+                    "valueExpected": null
+                }
+            ],
+            "run4": [
+                {
+                    "class": "\\Ht7\\Test\\Tests\\Utility\\Model\\ObjTestWithPublicVariable",
+                    "id": 1311,
+                    "parameters": [{
+                            "testProtected": "Test String..",
+                            "testPublic": "Test String public.."
+                        }],
+                    "task": "instance"
+                },
+                {
+                    "id": 1312,
+                    "instance": 1311,
+                    "name": "testPublic",
+                    "task": "property",
+                    "task-spec": "get"
+                },
+                {
+                    "type": "eq",
+                    "task": "assertion",
+                    "valueAsserted": "{id:1312}",
+                    "valueExpected": null
+                }
             ]
         }
     },

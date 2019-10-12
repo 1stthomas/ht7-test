@@ -3,7 +3,6 @@
 namespace Ht7\Test\Model;
 
 use \InvalidArgumentException;
-use \PHPUnit\Framework\TestCase;
 use \Ht7\Test\Utility\Traits\HasId;
 
 /**

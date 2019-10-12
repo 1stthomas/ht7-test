@@ -12,6 +12,8 @@ use \Ht7\Test\Model\Exc;
 use \Ht7\Test\Model\Instance;
 use \Ht7\Test\Model\MethodGet;
 use \Ht7\Test\Model\MethodVoid;
+use \Ht7\Test\Model\PropertyGet;
+use \Ht7\Test\Model\PropertyVoid;
 
 /**
  * Description of Task
@@ -112,6 +114,18 @@ class Task
 
                 $task = new MethodGet($data);
             }
+        } elseif ($taskName === 'property') {
+            if (empty($data['task-spec']) || $data['task-spec'] !== 'get') {
+                if (isset($data['task-spec'])) {
+                    unset($data['task-spec']);
+                }
+
+                $task = new PropertyVoid($data);
+            } else {
+                unset($data['task-spec']);
+
+                $task = new PropertyGet($data);
+            }
         }
 
         return $task;
@@ -185,6 +199,20 @@ class Task
             }
 
             $instance->$methodName(...$parameters);
+        } elseif ($className === PropertyGet::class) {
+            $id = $task->getId();
+            $instance = self::getStorage()->getVariable($task->getInstance());
+            $propertyName = $task->getName();
+
+            $property = $instance->{$propertyName};
+
+            self::getStorage()->addVariable($id, $property);
+        } elseif ($className === PropertyVoid::class) {
+            $id = $task->getId();
+            $instance = self::getStorage()->getVariable($task->getInstance());
+            $propertyName = $task->getName();
+
+            $instance->{$propertyName} = self::getStorage()->getVariable($id);
         }
     }
 

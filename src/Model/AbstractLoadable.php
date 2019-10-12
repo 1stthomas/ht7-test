@@ -20,6 +20,16 @@ abstract class AbstractLoadable implements Loadable
         $this->load($data);
     }
 
+    /**
+     * Load the current instance with the present variable data.
+     *
+     * This method will only load variables for which there is a defined set
+     * method. Otherwise an exception will be trown.
+     *
+     * @param   array   $data           Assoc array with the variable names as key and
+     *                                  the corresponding values as value.
+     * @throws  InvalidArgumentException
+     */
     public function load(array $data)
     {
 
