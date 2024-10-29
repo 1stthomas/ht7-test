@@ -18,7 +18,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Ht7\\Test\\Tests\\": "tests/"
+            "Ht7\\Test\\Tests\\": "tests/unit"
         }
     },
     "config": {
