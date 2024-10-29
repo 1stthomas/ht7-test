@@ -1,6 +1,6 @@
 <?php
 
-namespace Ht7\Test\Mocks;
+namespace Ht7\Test\Tests\Mocks;
 
 use Ht7\Test\Mocks\DefaultMock;
 use PHPUnit\Framework\TestCase;
