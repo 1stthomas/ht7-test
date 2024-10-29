@@ -102,31 +102,31 @@ final class DefaultMockTest extends TestCase
     // }
 }
 
-class TestHelperWithConstruct
-{
-    public function __construct(private string $test) {}
-    public function getTest1(string $additional): string
-    {
-        return $this->test . ' ' . $additional;
-    }
-    public function getTest2(string $additional): string
-    {
-        return $this->getTest1($additional);
-    }
-}
+// class TestHelperWithConstruct
+// {
+//     public function __construct(private string $test) {}
+//     public function getTest1(string $additional): string
+//     {
+//         return $this->test . ' ' . $additional;
+//     }
+//     public function getTest2(string $additional): string
+//     {
+//         return $this->getTest1($additional);
+//     }
+// }
 
-class TestHelperWithoutConstruct
-{
-    public function __construct()
-    {
-        throw new \Exception('This class should not be instantiated.');
-    }
-    public function getTest1(string $additional): string
-    {
-        return 'test ' . $additional;
-    }
-    public function getTest2(string $additional): string
-    {
-        return $this->getTest1($additional);
-    }
-}
+// class TestHelperWithoutConstruct
+// {
+//     public function __construct()
+//     {
+//         throw new \Exception('This class should not be instantiated.');
+//     }
+//     public function getTest1(string $additional): string
+//     {
+//         return 'test ' . $additional;
+//     }
+//     public function getTest2(string $additional): string
+//     {
+//         return $this->getTest1($additional);
+//     }
+// }
