@@ -35,7 +35,8 @@
         "phpunit/phpunit": "^10.5"
     },
     "scripts": {
-        "test": ".\\vendor\\bin\\phpunit --configuration .\\tests\\configuration.xml --testdox"
+        "test": ".\\vendor\\bin\\phpunit --configuration .\\tests\\configuration.xml --testdox",
+        "test-linux": "./vendor/bin/phpunit --configuration ./tests/configuration.xml --testdox"
     },
     "support": {
         "source": "https://github.com/1stthomas/ht7-test"
