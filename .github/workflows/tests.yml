@@ -41,7 +41,8 @@ jobs:
 
       - name: "Install dependencies"
         run: |
-          composer update --no-interaction --no-progress
+          composer install --no-interaction --no-progress --no-suggest
+          # composer update --no-interaction --no-progress
 
       - name: "Unit Tests"
         run: composer test-linux
