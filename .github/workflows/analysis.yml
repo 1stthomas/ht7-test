@@ -1,0 +1,20 @@
+name: Code Analysis
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: php-actions/composer@v6
+    - uses: php-actions/phpstan@v3
+      with:
+        level: 10
+        path: src/ tests/
+        php_version: 8.2
