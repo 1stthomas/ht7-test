@@ -27,6 +27,10 @@ class DefaultMock extends TestCase
 
         return $mb->getMock();
     }
+    /**
+     * @psalm-template RealInstanceType of object
+     * @psalm-param class-string<RealInstanceType> $className
+     */
     public function setClassName(string $className): static
     {
         $this->className = $className;
