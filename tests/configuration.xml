@@ -25,13 +25,18 @@
     timeoutForLargeTests="60"
     verbose="true"
 >
+    <coverage>
+        <include>
+            <directory suffix=".php">../src</directory>
+        </include>
+    </coverage>
     <filter>
         <whitelist>
             <directory suffix=".php">./</directory>
         </whitelist>    
     </filter>
     <logging>
-        <log type="junit" target="C:\data\edv\php\misc\logs\phpunit_ht7-base.xml"/>
+        <log type="junit" target="../log/phpunit_ht7-base.xml"/>
     </logging>
     <testsuites>
         <testsuite name="ht7 base">

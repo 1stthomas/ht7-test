@@ -4,25 +4,20 @@ namespace Ht7\Test\Tests\Mocks;
 
 use Ht7\Test\Mocks\DefaultMock;
 use PHPUnit\Framework\TestCase;
-// use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;
-// use PHPUnit\Framework\MockObject\MockBuilder;
-// use PHPUnit\Framework\MockObject\MockObject;
 
 final class DefaultMockTest extends TestCase
 {
-    // private string $className = DefaultMockTest::class;
-
     #[Test]
     #[TestDox('Create a default mock with triggering the constructor.')]
-    // #[DataProvider('createWithoutContructProvider')]
-    public function createWithContruct(): void
+    // #[DataProvider('createWithConstructProvider')]
+    public function createWithConstruct(): void
     {
         $msg = ' - and what?';
         $expected = 'from test1';
-        $sut = new DefaultMock(TestHelperWithConstruct::class);
-        $mock = $sut->create(['getTest1'], ['Initial test text']);
+        $sut = new DefaultMock($this, TestHelperWithConstruct::class);
+        $mock = $sut->create(['getTest1'], ['additional' => 'Initial test text']);
         $mock->expects($this->once())
             ->method('getTest1')
             ->with($msg)
@@ -33,12 +28,12 @@ final class DefaultMockTest extends TestCase
     }
     #[Test]
     #[TestDox('Create a default mock without triggering the constructor.')]
-    // #[DataProvider('createWithoutContructProvider')]
-    public function createWithoutContruct(): void
+    // #[DataProvider('createWithoutConstructProvider')]
+    public function createWithoutConstruct(): void
     {
         $msg = ' - and what?';
         $expected = 'from test1';
-        $sut = new DefaultMock(TestHelperWithoutConstruct::class);
+        $sut = new DefaultMock($this, TestHelperWithoutConstruct::class);
         $mock = $sut->create(['getTest1']);
         $mock->expects($this->once())
             ->method('getTest1')

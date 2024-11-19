@@ -4,14 +4,17 @@ namespace Ht7\Test\Mocks;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\MockBuilder;
 
-class DefaultMock extends TestCase
+/**
+ * @psalm-template RealInstanceType of object
+ */
+class DefaultMock
 {
     /**
-     * @psalm-template RealInstanceType of object
      * @psalm-param class-string<RealInstanceType> $className
      */
-    public function __construct(private string $className) {}
+    public function __construct(private TestCase $testCase, private string $className) {}
     /**
      * @psalm-param list<non-empty-string> $methods
      * @param   array<int, string>   $methods            The methods to mock.
@@ -20,15 +23,13 @@ class DefaultMock extends TestCase
      */
     public function create(array $methods = [], ?array $constructorArgs = null): MockObject
     {
-        $mb = $this->getMockBuilder($this->className)
+        $mb = $this->testCase->getMockBuilder($this->className)
             ->onlyMethods($methods);
-
         $constructorArgs === null ? $mb->disableOriginalConstructor() : $mb->setConstructorArgs($constructorArgs);
-
+        
         return $mb->getMock();
     }
     /**
-     * @psalm-template RealInstanceType of object
      * @psalm-param class-string<RealInstanceType> $className
      */
     public function setClassName(string $className): static
