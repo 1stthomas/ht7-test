@@ -7,6 +7,9 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;
 
+/**
+ * @psalm-template RealInstanceType of object
+ */
 final class DefaultMockTest extends TestCase
 {
     #[Test]
@@ -23,7 +26,7 @@ final class DefaultMockTest extends TestCase
             ->with($msg)
             ->willReturn($expected);
 
-        /** @var TestHelperWithoutConstruct $mock */
+        /** @var TestHelperWithoutConstruct&RealInstanceType $mock */
         $this->assertSame($expected, $mock->getTest1($msg));
     }
     #[Test]

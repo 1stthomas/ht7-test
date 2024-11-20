@@ -18,7 +18,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Ht7\\Test\\Tests\\": "tests/unit"
+            "Ht7\\Test\\Tests\\": "tests/Unit"
         }
     },
     "config": {
@@ -41,6 +41,7 @@
         "phpstan-win": ".\\vendor\\bin\\phpstan analyse src tests --level max",
         "test": "./vendor/bin/phpunit --configuration ./tests/phpunit.xml --testdox",
         "test-unit": "./vendor/bin/phpunit --configuration ./tests/phpunit.xml --testdox --testsuite Unit",
+        "test-unit-win": ".\\vendor\\bin\\phpunit --configuration .\\tests\\phpunit.xml --testdox --testsuite Unit",
         "test-win": ".\\vendor\\bin\\phpunit --configuration .\\tests\\phpunit.xml --testdox"
     },
     "support": {
