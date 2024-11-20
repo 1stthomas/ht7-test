@@ -23,7 +23,7 @@ class DefaultMock
      */
     public function create(array $methods = [], ?array $constructorArgs = null): MockObject
     {
-        $mb = $this->testCase->getMockBuilder($this->className)
+        $mb = (new MockBuilder($this->testCase, $this->className))
             ->onlyMethods($methods);
         $constructorArgs === null ? $mb->disableOriginalConstructor() : $mb->setConstructorArgs($constructorArgs);
         

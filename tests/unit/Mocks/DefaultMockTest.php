@@ -17,7 +17,7 @@ final class DefaultMockTest extends TestCase
         $msg = ' - and what?';
         $expected = 'from test1';
         $sut = new DefaultMock($this, TestHelperWithConstruct::class);
-        $mock = $sut->create(['getTest1'], ['additional' => 'Initial test text']);
+        $mock = $sut->create(['getTest1'], ['test' => 'Initial test text']);
         $mock->expects($this->once())
             ->method('getTest1')
             ->with($msg)
