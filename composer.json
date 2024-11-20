@@ -34,13 +34,14 @@
     "require-dev": {
         "phpstan/phpstan": "^1.12",
         "phpstan/phpstan-phpunit": "^1.4",
-        "phpunit/phpunit": "^10.5"
+        "phpunit/phpunit": "^11.0"
     },
     "scripts": {
         "phpstan": "./vendor/bin/phpstan analyse src tests --level max",
         "phpstan-win": ".\\vendor\\bin\\phpstan analyse src tests --level max",
-        "test": ".\\vendor\\bin\\phpunit --configuration .\\tests\\configuration.xml --testdox",
-        "test-linux": "./vendor/bin/phpunit --configuration ./tests/configuration.xml --testdox"
+        "test": "./vendor/bin/phpunit --configuration ./tests/phpunit.xml --testdox",
+        "test-unit": "./vendor/bin/phpunit --configuration ./tests/phpunit.xml --testdox --testsuite Unit",
+        "test-win": ".\\vendor\\bin\\phpunit --configuration .\\tests\\phpunit.xml --testdox"
     },
     "support": {
         "source": "https://github.com/1stthomas/ht7-test"
