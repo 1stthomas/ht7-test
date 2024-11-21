@@ -6,6 +6,7 @@ use Ht7\Test\Mocks\DefaultMock;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @psalm-template RealInstanceType of object
@@ -26,7 +27,7 @@ final class DefaultMockTest extends TestCase
             ->with($msg)
             ->willReturn($expected);
 
-        /** @var TestHelperWithoutConstruct&RealInstanceType $mock */
+        /** @var MockObject&TestHelperWithoutConstruct $mock */
         $this->assertSame($expected, $mock->getTest1($msg));
     }
     #[Test]
@@ -102,7 +103,9 @@ final class DefaultMockTest extends TestCase
 
 class TestHelperWithConstruct
 {
-    public function __construct(private string $test) {}
+    public function __construct(private string $test)
+    {
+    }
     public function getTest1(string $additional): string
     {
         return $this->test . ' ' . $additional;
