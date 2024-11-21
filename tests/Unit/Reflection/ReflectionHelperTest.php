@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @psalm-template RealInstanceType of object
@@ -23,7 +24,6 @@ class ReflectionHelperTest extends TestCase
     {
         $sut = new ReflectionHelper($this->className);
 
-        $this->assertNotEmpty($sut->reflectedClass, 'reflected class created.');
         $this->assertSame($this->className, $sut->reflectedClass->getName(), 'reflected class name is ' . $this->className . '.');
     }
     #[Test]
@@ -136,7 +136,7 @@ class ReflectionHelperTest extends TestCase
                 ->with($isAccessable);
         }
         /**
-         * @psalm-var  array<int, non-empty-string> $methods
+         * @psalm-var  list<non-empty-string> $methods
          */
         $methods = [$method];
         $reflectedClass = $this->getMockBuilder(\ReflectionClass::class)
@@ -149,7 +149,7 @@ class ReflectionHelperTest extends TestCase
         if ($name !== null) {
             $invoc->with($name);
         }
-        /** @var ReflectionHelper $sut */
+        /** @var MockObject&ReflectionHelper $sut */
         $sut = $this->getMockBuilder($this->className)
             ->onlyMethods([])
             ->setConstructorArgs([$reflectedClass])
