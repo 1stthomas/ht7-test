@@ -1,15 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ht7\Test\Tests\Mocks;
 
 use Ht7\Test\Mocks\DefaultMock;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @psalm-template RealInstanceType of object
+ *
+ * @internal
+ *
+ * @coversNothing
  */
 final class DefaultMockTest extends TestCase
 {
@@ -30,6 +35,7 @@ final class DefaultMockTest extends TestCase
         /** @var MockObject&TestHelperWithoutConstruct $mock */
         $this->assertSame($expected, $mock->getTest1($msg));
     }
+
     #[Test]
     #[TestDox('Create a default mock without triggering the constructor.')]
     // #[DataProvider('createWithoutConstructProvider')]
@@ -103,13 +109,13 @@ final class DefaultMockTest extends TestCase
 
 class TestHelperWithConstruct
 {
-    public function __construct(private string $test)
-    {
-    }
+    public function __construct(private string $test) {}
+
     public function getTest1(string $additional): string
     {
         return $this->test . ' ' . $additional;
     }
+
     public function getTest2(string $additional): string
     {
         return $this->getTest1($additional);
@@ -122,10 +128,12 @@ class TestHelperWithoutConstruct
     {
         throw new \Exception('This class should not be instantiated.');
     }
+
     public function getTest1(string $additional): string
     {
         return 'test ' . $additional;
     }
+
     public function getTest2(string $additional): string
     {
         return $this->getTest1($additional);

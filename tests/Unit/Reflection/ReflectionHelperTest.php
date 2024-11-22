@@ -1,23 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ht7\Test\Tests\Reflection;
 
 use Ht7\Test\Reflection\ReflectionHelper;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @psalm-template RealInstanceType of object
+ *
+ * @internal
+ *
+ * @coversNothing
  */
 class ReflectionHelperTest extends TestCase
 {
-    /**
-     * @psalm-var class-string<object>
-     */
+    /** @psalm-var class-string<object> */
     private string $className = ReflectionHelper::class;
+
     #[Test]
     #[TestDox('Create a reflection helper instance')]
     public function constructor(): void
@@ -26,6 +31,7 @@ class ReflectionHelperTest extends TestCase
 
         $this->assertSame($this->className, $sut->reflectedClass->getName(), 'reflected class name is ' . $this->className . '.');
     }
+
     #[Test]
     #[TestDox('Get the constructor method instance')]
     #[DataProvider('getConstructorProvider')]
@@ -38,6 +44,7 @@ class ReflectionHelperTest extends TestCase
 
         $this->assertSame($reflectedConstructor, $constructor, 'constructor reflection method created.');
     }
+
     #[Test]
     #[TestDox('Get a reflection method instance')]
     #[DataProvider('getMethodProvider')]
@@ -50,6 +57,7 @@ class ReflectionHelperTest extends TestCase
 
         $this->assertSame($reflectedMethod, $method, 'reflection method created.');
     }
+
     #[Test]
     #[TestDox('Get a reflection property instance')]
     #[DataProvider('getPropertyProvider')]
@@ -66,8 +74,9 @@ class ReflectionHelperTest extends TestCase
 
         $this->assertSame($reflectedProperty, $property, 'reflection property created.');
     }
+
     /**
-     * @return  array<string, mixed>
+     * @return array<string, mixed>
      */
     final public static function getConstructorProvider(): array
     {
@@ -83,8 +92,9 @@ class ReflectionHelperTest extends TestCase
             ],
         ];
     }
+
     /**
-     * @return  array<string, mixed>
+     * @return array<string, mixed>
      */
     final public static function getMethodProvider(): array
     {
@@ -100,8 +110,9 @@ class ReflectionHelperTest extends TestCase
             ],
         ];
     }
+
     /**
-     * @return  array<string, mixed>
+     * @return array<string, mixed>
      */
     final public static function getPropertyProvider(): array
     {
@@ -117,9 +128,11 @@ class ReflectionHelperTest extends TestCase
             ],
         ];
     }
+
     /**
      * @psalm-param class-string<RealInstanceType> $returnClass
-     * @return  array<int, object>
+     *
+     * @return array<int, object>
      */
     private function getSutAndReflected(?bool $isAccessable, string $method, ?string $name = null, string $returnClass = \ReflectionMethod::class): array
     {
@@ -135,6 +148,7 @@ class ReflectionHelperTest extends TestCase
                 ->method('setAccessible')
                 ->with($isAccessable);
         }
+
         /**
          * @psalm-var  list<non-empty-string> $methods
          */
@@ -149,6 +163,7 @@ class ReflectionHelperTest extends TestCase
         if ($name !== null) {
             $invoc->with($name);
         }
+
         /** @var MockObject&ReflectionHelper $sut */
         $sut = $this->getMockBuilder($this->className)
             ->onlyMethods([])
