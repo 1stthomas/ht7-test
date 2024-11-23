@@ -7,6 +7,7 @@ namespace Ht7\Test\Tests\Mocks;
 use Ht7\Test\Mocks\DefaultMock;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
