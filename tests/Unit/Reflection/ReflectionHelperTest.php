@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Ht7\Test\Tests\Reflection;
 
 use Ht7\Test\Reflection\ReflectionHelper;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;
@@ -15,10 +17,13 @@ use PHPUnit\Framework\TestCase;
  * @psalm-template RealInstanceType of object
  *
  * @internal
- *
- * @coversNothing
  */
-class ReflectionHelperTest extends TestCase
+#[CoversClass(ReflectionHelper::class)]
+#[CoversMethod(ReflectionHelper::class, '__construct')]
+#[CoversMethod(ReflectionHelper::class, 'getConstructor')]
+#[CoversMethod(ReflectionHelper::class, 'getMethod')]
+#[CoversMethod(ReflectionHelper::class, 'getProperty')]
+final class ReflectionHelperTest extends TestCase
 {
     /** @psalm-var class-string<object> */
     private string $className = ReflectionHelper::class;
@@ -78,7 +83,7 @@ class ReflectionHelperTest extends TestCase
     /**
      * @return array<string, mixed>
      */
-    final public static function getConstructorProvider(): array
+    public static function getConstructorProvider(): array
     {
         return [
             'accessable constructor' => [
@@ -96,7 +101,7 @@ class ReflectionHelperTest extends TestCase
     /**
      * @return array<string, mixed>
      */
-    final public static function getMethodProvider(): array
+    public static function getMethodProvider(): array
     {
         return [
             'accessable method' => [
@@ -114,7 +119,7 @@ class ReflectionHelperTest extends TestCase
     /**
      * @return array<string, mixed>
      */
-    final public static function getPropertyProvider(): array
+    public static function getPropertyProvider(): array
     {
         return [
             'accessable property' => [

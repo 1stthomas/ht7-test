@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace Ht7\Test\Tests\Mocks;
 
 use Ht7\Test\Mocks\DefaultMock;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -14,14 +17,14 @@ use PHPUnit\Framework\TestCase;
  * @psalm-template RealInstanceType of object
  *
  * @internal
- *
- * @coversNothing
  */
+#[CoversClass(DefaultMock::class)]
+#[CoversMethod(DefaultMock::class, 'create')]
+#[UsesClass(MockObject::class)]
 final class DefaultMockTest extends TestCase
 {
     #[Test]
     #[TestDox('Create a default mock with triggering the constructor.')]
-    // #[DataProvider('createWithConstructProvider')]
     public function createWithConstruct(): void
     {
         $msg = ' - and what?';
@@ -39,7 +42,6 @@ final class DefaultMockTest extends TestCase
 
     #[Test]
     #[TestDox('Create a default mock without triggering the constructor.')]
-    // #[DataProvider('createWithoutConstructProvider')]
     public function createWithoutConstruct(): void
     {
         $msg = ' - and what?';
@@ -54,58 +56,6 @@ final class DefaultMockTest extends TestCase
         /** @var MockObject&TestHelperWithoutConstruct $mock */
         $this->assertSame($expected, $mock->getTest1($msg));
     }
-    //     public function create(array $setup): void
-    //     {
-    //     // MockBuilder" is declared "final" and cannot be doubled
-    //     // sad!!
-    //     $mockBuilder = $this->getMockBuilder(MockBuilder::class)
-    //         ->onlyMethods(['onlyMethods', 'disableOriginalConstructor', 'setConstructorArgs', 'getMock'])
-    //         ->disableOriginalConstructor()
-    //         ->getMock();
-    //     $mockBuilder->expects($this->once())
-    //             ->method('onlyMethods')
-    //             ->with($this->equalTo($setup['onlyMethods']['args']));
-    //     if ($setup['constructorArgs'] === null) {
-    //         $mockBuilder->expects($this->once())
-    //             ->method('disableOriginalConstructor');
-    //         $mockBuilder->expects($this->never())
-    //             ->method('setConstructorArgs');
-    //     } else {
-    //         $mockBuilder->expects($this->never())
-    //             ->method('disableOriginalConstructor');
-    //         $mockBuilder->expects($this->once())
-    //             ->method('setConstructorArgs')
-    //             ->with($this->equalTo($setup['constructorArgs']));
-    //     }
-    //     /** @var DefaultMock $sut */
-    //     $sut = $this->getMockBuilder($this->className)
-    //         ->onlyMethods(['getMockBuilder'])
-    //         ->setConstructorArgs([$setup['className']])
-    //         ->getMock();
-    //     $mockBuilder->expects($this->once())
-    //             ->method('getMockBuilder')
-    //             ->willReturn($mockBuilder);
-    //     // $sut = new $this->className($setup['className']);
-    //     $sut->create($setup['onlyMethods']['args'], $setup['constructorArgs']);
-    // }
-    // public static function createProvider(): array
-    // {
-    //     return [
-    //         'simple mock.' => [
-    //             'setup' => [
-    //                 'className' => DefaultMock::class,
-    //                 'constructorArgs' => null,
-    //                 'onlyMethods' => [
-    //                     'count' => 1,
-    //                     'args' => ['setClassName'],
-    //                 ],
-    //             ],
-    //             // 'expected' => [
-
-    //             // ],
-    //         ],
-    //     ];
-    // }
 }
 
 class TestHelperWithConstruct
