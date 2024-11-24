@@ -18,8 +18,13 @@
     timeoutForMediumTests="10"
     timeoutForLargeTests="60"
 >
+    <coverage>
+        <report>
+            <clover outputFile="clover.xml" />
+        </report>
+    </coverage>
     <logging>
-        <junit outputFile="../log/phpunit_ht7-test.xml"/>
+        <junit outputFile="../log/phpunit_ht7-test.xml" />
     </logging>
     <testsuites>
         <testsuite name="Unit">
