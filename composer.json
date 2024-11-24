@@ -39,6 +39,7 @@
         "phpunit/phpunit": "^11.0"
     },
     "scripts": {
+        "cc": "php -d xdebug.mode=coverage ./vendor/bin/phpunit --configuration ./tests/phpunit-cc.xml --coverage-clover=coverage.clover --testsuite Unit",
         "cs": "./vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --dry-run --using-cache=no -v",
         "cs-ci": "./vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --dry-run --stop-on-violation --using-cache=no -v",
         "cs-debug": "./vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --diff --dry-run --format=xml --using-cache=no -v",

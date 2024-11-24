@@ -29,7 +29,8 @@
 >
     <coverage>
         <report>
-            <clover outputFile="coverage.clover" />
+            <clover outputFile="coverage.xml" />
+            <html  outputDirectory="coverage" lowUpperBound="50" highLowerBound="90" />
         </report>
     </coverage>
     <logging>
@@ -37,7 +38,7 @@
     </logging>
     <source ignoreIndirectDeprecations="true" restrictNotices="true" restrictWarnings="true">
         <include>
-            <directory suffix=".php">./src</directory>
+            <directory suffix=".php">../src</directory>
         </include>
     </source>
     <testsuites>

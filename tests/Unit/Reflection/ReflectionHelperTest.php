@@ -25,6 +25,7 @@ final class ReflectionHelperTest extends TestCase
 
     #[Test]
     #[TestDox('Create a reflection helper instance')]
+    /** @covers \Ht7\Test\Reflection\ReflectionHelper::__construct */
     public function constructor(): void
     {
         $sut = new ReflectionHelper($this->className);
@@ -35,6 +36,7 @@ final class ReflectionHelperTest extends TestCase
     #[Test]
     #[TestDox('Get the constructor method instance')]
     #[DataProvider('getConstructorProvider')]
+    /** @covers \Ht7\Test\Reflection\ReflectionHelper::getConstructor */
     public function getConstructor(?bool $isAccessable): void
     {
         list($sut, $reflectedConstructor) = $this->getSutAndReflected($isAccessable, 'getConstructor');
@@ -48,6 +50,7 @@ final class ReflectionHelperTest extends TestCase
     #[Test]
     #[TestDox('Get a reflection method instance')]
     #[DataProvider('getMethodProvider')]
+    /** @covers \Ht7\Test\Reflection\ReflectionHelper::getMethod */
     public function getMethod(?bool $isAccessable): void
     {
         list($sut, $reflectedMethod) = $this->getSutAndReflected($isAccessable, 'getMethod', 'testmethod');
@@ -61,6 +64,7 @@ final class ReflectionHelperTest extends TestCase
     #[Test]
     #[TestDox('Get a reflection property instance')]
     #[DataProvider('getPropertyProvider')]
+    /** @covers \Ht7\Test\Reflection\ReflectionHelper::getProperty */
     public function getProperty(?bool $isAccessable): void
     {
         /**

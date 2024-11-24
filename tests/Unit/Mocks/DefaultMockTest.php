@@ -8,7 +8,6 @@ use Ht7\Test\Mocks\DefaultMock;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;
-use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -16,9 +15,10 @@ use PHPUnit\Framework\TestCase;
  * @psalm-template RealInstanceType of object
  *
  * @internal
+ * 
+ * @covers \Ht7\Test\Mocks\DefaultMock::create
  */
 #[CoversClass(DefaultMock::class)]
-#[UsesClass(MockObject::class)]
 final class DefaultMockTest extends TestCase
 {
     #[Test]
@@ -40,6 +40,7 @@ final class DefaultMockTest extends TestCase
 
     #[Test]
     #[TestDox('Create a default mock without triggering the constructor.')]
+    /** @covers \Ht7\Test\Mocks\DefaultMock::create */
     public function createWithoutConstruct(): void
     {
         $msg = ' - and what?';
