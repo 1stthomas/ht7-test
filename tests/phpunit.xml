@@ -4,11 +4,20 @@
     xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.4/phpunit.xsd"
     backupGlobals="true"
     backupStaticProperties="false"
+    beStrictAboutCoverageMetadata="true"
+    beStrictAboutOutputDuringTests="true"
     bootstrap="./bootstrap.php"
     cacheDirectory="../tmp/cache"
     cacheResult="false"
     colors="true"
+    displayDetailsOnPhpunitDeprecations="true"
+    executionOrder="depends,defects"
+    failOnPhpunitDeprecation="true"
+    failOnRisky="true"
+    failOnWarning="true"
     processIsolation="false"
+    requireCoverageMetadata="true"
+    shortenArraysForExportThreshold="10"
     stopOnError="false"
     stopOnFailure="false"
     stopOnIncomplete="false"
@@ -20,15 +29,20 @@
 >
     <coverage>
         <report>
-            <clover outputFile="clover.xml" />
+            <clover outputFile="coverage.clover" />
         </report>
     </coverage>
     <logging>
         <junit outputFile="../log/phpunit_ht7-test.xml" />
     </logging>
+    <source ignoreIndirectDeprecations="true" restrictNotices="true" restrictWarnings="true">
+        <include>
+            <directory>./src</directory>
+        </include>
+    </source>
     <testsuites>
         <testsuite name="Unit">
-            <directory>./</directory>
+            <directory>./tests/Unit/</directory>
             <exclude>../vendor</exclude>
         </testsuite>
     </testsuites>
