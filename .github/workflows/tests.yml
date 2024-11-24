@@ -73,6 +73,12 @@ jobs:
         if: env.CODE_COVERAGE != 'none'
         run: php ./vendor/bin/phpunit --configuration ./tests/phpunit-cc.xml --coverage-clover=coverage.xml --testsuite Unit
 
+      - name: "Upload code coverage"
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage.xml
+          path: .
+
       - name: Make code coverage badge
         if: env.CODE_COVERAGE != 'none'
         uses: timkrase/phpunit-coverage-badge@v1.2.1
