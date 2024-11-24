@@ -71,21 +71,24 @@ jobs:
 
       - name: "Perform unit tests with coverage"
         if: env.CODE_COVERAGE != 'none'
-        run: php ./vendor/bin/phpunit --configuration ./tests/phpunit-cc.xml --coverage-clover=coverage.xml --testsuite Unit
+        run: |
+          php ./vendor/bin/phpunit --configuration ./tests/phpunit-cc.xml --coverage-clover=coverage.xml --testsuite Unit
+          ls -la
 
-      - name: "Upload code coverage"
-        if: env.CODE_COVERAGE != 'none'
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage.xml
-          path: ./coverage.xml
+      # - name: "Upload code coverage"
+      #   if: env.CODE_COVERAGE != 'none'
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: coverage.xml
+      #     path: ./coverage.xml
 
       - name: Make code coverage badge
         if: env.CODE_COVERAGE != 'none'
         uses: timkrase/phpunit-coverage-badge@v1.2.1
         with:
-          coverage_badge_path: output/coverage.svg
+          coverage_badge_path: doc/images/coverage.svg
           push_badge: true
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
         
       # - name: Git push to image-data branch
       #   if: env.CODE_COVERAGE != 'none' && github.event_name == 'pull_request'
