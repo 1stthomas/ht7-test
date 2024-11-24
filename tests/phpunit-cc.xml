@@ -29,8 +29,8 @@
 >
     <coverage>
         <report>
-            <clover outputFile="coverage.xml" />
-            <html  outputDirectory="coverage" lowUpperBound="50" highLowerBound="90" />
+            <clover outputFile="clover.xml" />
+            <html  outputDirectory="log/coverage" lowUpperBound="50" highLowerBound="90" />
         </report>
     </coverage>
     <logging>
