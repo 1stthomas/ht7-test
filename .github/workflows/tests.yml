@@ -74,6 +74,7 @@ jobs:
         run: php ./vendor/bin/phpunit --configuration ./tests/phpunit-cc.xml --coverage-clover=coverage.xml --testsuite Unit
 
       - name: "Upload code coverage"
+        if: env.CODE_COVERAGE != 'none'
         uses: actions/upload-artifact@v4
         with:
           name: coverage.xml
