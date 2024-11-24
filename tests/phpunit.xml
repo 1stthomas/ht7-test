@@ -42,7 +42,7 @@
     </source>
     <testsuites>
         <testsuite name="Unit">
-            <directory>./tests/Unit/</directory>
+            <directory>Unit/</directory>
             <exclude>../vendor</exclude>
         </testsuite>
     </testsuites>
