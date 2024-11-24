@@ -72,7 +72,7 @@ jobs:
       - name: "Perform unit tests with coverage"
         if: env.CODE_COVERAGE != 'none'
         run: |
-          php ./vendor/bin/phpunit --configuration ./tests/phpunit-cc.xml --testsuite Unit
+          php ./vendor/bin/phpunit --configuration ./tests/phpunit-cc.xml --coverage-clover=clover.xml --testsuite Unit
           ls -la
 
       # - name: "Upload code coverage"
