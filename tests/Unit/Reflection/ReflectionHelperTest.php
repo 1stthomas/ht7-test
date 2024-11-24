@@ -6,7 +6,6 @@ namespace Ht7\Test\Tests\Reflection;
 
 use Ht7\Test\Reflection\ReflectionHelper;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;
@@ -19,10 +18,6 @@ use PHPUnit\Framework\TestCase;
  * @internal
  */
 #[CoversClass(ReflectionHelper::class)]
-#[CoversMethod(ReflectionHelper::class, '__construct')]
-#[CoversMethod(ReflectionHelper::class, 'getConstructor')]
-#[CoversMethod(ReflectionHelper::class, 'getMethod')]
-#[CoversMethod(ReflectionHelper::class, 'getProperty')]
 final class ReflectionHelperTest extends TestCase
 {
     /** @psalm-var class-string<object> */

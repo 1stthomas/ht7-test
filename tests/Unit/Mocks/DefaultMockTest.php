@@ -6,7 +6,6 @@ namespace Ht7\Test\Tests\Mocks;
 
 use Ht7\Test\Mocks\DefaultMock;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -19,7 +18,6 @@ use PHPUnit\Framework\TestCase;
  * @internal
  */
 #[CoversClass(DefaultMock::class)]
-#[CoversMethod(DefaultMock::class, 'create')]
 #[UsesClass(MockObject::class)]
 final class DefaultMockTest extends TestCase
 {
