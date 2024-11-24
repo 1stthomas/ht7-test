@@ -32,7 +32,7 @@
     </logging>
     <source ignoreIndirectDeprecations="true" restrictNotices="true" restrictWarnings="true">
         <include>
-            <directory>./src</directory>
+            <directory suffix=".php">./src</directory>
         </include>
     </source>
     <testsuites>
