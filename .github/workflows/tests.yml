@@ -75,7 +75,7 @@ jobs:
       - name: "Tests with coverage"
         if: env.CODE_COVERAGE != 'none'
         run: |
-          echo 'code env: ${{ matrix.php-version }}'
+          echo 'code env: ${{ matrix.php-version }} - ${{ env.CODE_COVERAGE}}'
           php ./vendor/bin/phpunit --configuration ./tests/phpunit-cc.xml --coverage-clover=coverage.clover --testsuite Unit
 
       - name: Make code coverage badge
