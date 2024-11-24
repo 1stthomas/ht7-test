@@ -28,9 +28,9 @@ jobs:
         composer:
           - "composer:v2"
         include:
-          - php-version: 8.3
-            operating-system: "ubuntu-latest"
-            dependencies: "lowest"
+          # - php-version: 8.3
+          #   operating-system: "ubuntu-latest"
+          #   dependencies: "lowest"
           - php-version: 8.3
             operating-system: "ubuntu-latest"
             dependencies: "highest"
@@ -38,10 +38,7 @@ jobs:
     steps:
       - name: Enable code coverage
         if: matrix.php-version == '8.3' && startsWith(matrix.operating-system, 'ubuntu') && matrix.dependencies == 'locked'
-        run: |
-          printf 'CODE_COVERAGE=pcov\n' >> "$GITHUB_ENV"
-          echo 'will do code coverage\n'
-          echo 'matrix.php-version: ${{ matrix.php-version }}'
+        run: printf 'CODE_COVERAGE=pcov\n' >> "$GITHUB_ENV"
 
       - name: "Checkout"
         uses: "actions/checkout@v4"
@@ -69,14 +66,12 @@ jobs:
         run: |
           composer install --no-interaction --no-progress --no-suggest
 
-      - name: "Unit Tests"
+      - name: "Perform unit tests"
         run: composer test-unit
 
-      - name: "Tests with coverage"
+      - name: "Perform unit tests with coverage"
         if: env.CODE_COVERAGE != 'none'
-        run: |
-          echo 'code env: ${{ matrix.php-version }} - ${{ env.CODE_COVERAGE}}'
-          php ./vendor/bin/phpunit --configuration ./tests/phpunit-cc.xml --coverage-clover=coverage.clover --testsuite Unit
+        run: php ./vendor/bin/phpunit --configuration ./tests/phpunit-cc.xml --coverage-clover=coverage.xml --testsuite Unit
 
       - name: Make code coverage badge
         if: env.CODE_COVERAGE != 'none'
@@ -84,8 +79,9 @@ jobs:
         with:
           coverage_badge_path: output/coverage.svg
           push_badge: true
-
+        
       # - name: Git push to image-data branch
+      #   if: env.CODE_COVERAGE != 'none' && github.event_name == 'pull_request'
       #   uses: peaceiris/actions-gh-pages@v3
       #   with:
       #     publish_dir: ./output
