@@ -1,5 +1,7 @@
+/coverage/
 /log/
 /nbproject/
 /tmp/
 /vendor/
+/coverage.xml
 /php_errors.log
