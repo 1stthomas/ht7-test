@@ -11,7 +11,7 @@ jobs:
     name: PHPStan
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: php-actions/composer@v6
     - uses: php-actions/phpstan@v3
       with:
@@ -23,7 +23,7 @@ jobs:
     name: PHP-CS-Fixer
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Get changed files
         id: changed-files
