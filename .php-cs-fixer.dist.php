@@ -18,6 +18,7 @@ return (new Config())
         'declare_strict_types' => true,
         'header_comment' => ['header' => <<<'EOF'
         EOF],
+        'function_declaration' => ['closure_fn_spacing' => 'none'],
         'modernize_strpos' => true,
         'multiline_comment_opening_closing' => true,
         'multiline_whitespace_before_semicolons' => ['strategy' => 'no_multi_line'],
