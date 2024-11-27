@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1732732314">
-  <project timestamp="1732732314">
+<coverage generated="1732732601">
+  <project timestamp="1732732601">
     <package name="Ht7\Test\Mocks">
       <file name="/home/runner/work/ht7-test/ht7-test/src/Mocks/DefaultMock.php">
         <class name="Ht7\Test\Mocks\DefaultMock" namespace="Ht7\Test\Mocks">
