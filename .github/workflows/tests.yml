@@ -74,11 +74,6 @@ jobs:
         run: |
           php ./vendor/bin/phpunit --configuration ./tests/phpunit-cc.xml --coverage-clover=clover.xml --testsuite Unit
 
-      - name: "Remove .gitignore to make coverage badge working"
-        if: env.CODE_COVERAGE != 'none'
-        run: |
-          rm .gitignore
-
       - name: Make code coverage badge
         if: env.CODE_COVERAGE != 'none'
         uses: timkrase/phpunit-coverage-badge@v1.2.1
