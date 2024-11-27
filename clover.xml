@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1732732314">
+  <project timestamp="1732732314">
+    <package name="Ht7\Test\Mocks">
+      <file name="/home/runner/work/ht7-test/ht7-test/src/Mocks/DefaultMock.php">
+        <class name="Ht7\Test\Mocks\DefaultMock" namespace="Ht7\Test\Mocks">
+          <metrics complexity="4" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="7" elements="10" coveredelements="10"/>
+        </class>
+        <line num="19" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="27" type="method" name="create" visibility="public" complexity="2" crap="2" count="2"/>
+        <line num="29" type="stmt" count="2"/>
+        <line num="30" type="stmt" count="2"/>
+        <line num="31" type="stmt" count="2"/>
+        <line num="33" type="stmt" count="2"/>
+        <line num="39" type="method" name="setClassName" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="41" type="stmt" count="1"/>
+        <line num="43" type="stmt" count="1"/>
+        <metrics loc="46" ncloc="31" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="7" elements="10" coveredelements="10"/>
+      </file>
+    </package>
+    <package name="Ht7\Test\Reflection">
+      <file name="/home/runner/work/ht7-test/ht7-test/src/Reflection/ReflectionHelper.php">
+        <class name="Ht7\Test\Reflection\ReflectionHelper" namespace="Ht7\Test\Reflection">
+          <metrics complexity="9" methods="4" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="10" coveredstatements="10" elements="14" coveredelements="14"/>
+        </class>
+        <line num="19" type="method" name="__construct" visibility="public" complexity="2" crap="2" count="10"/>
+        <line num="21" type="stmt" count="10"/>
+        <line num="24" type="method" name="getConstructor" visibility="public" complexity="3" crap="3" count="3"/>
+        <line num="26" type="stmt" count="3"/>
+        <line num="28" type="stmt" count="3"/>
+        <line num="30" type="stmt" count="3"/>
+        <line num="33" type="method" name="getMethod" visibility="public" complexity="2" crap="2" count="3"/>
+        <line num="36" type="stmt" count="3"/>
+        <line num="37" type="stmt" count="3"/>
+        <line num="39" type="stmt" count="3"/>
+        <line num="42" type="method" name="getProperty" visibility="public" complexity="2" crap="2" count="3"/>
+        <line num="44" type="stmt" count="3"/>
+        <line num="45" type="stmt" count="3"/>
+        <line num="47" type="stmt" count="3"/>
+        <metrics loc="50" ncloc="41" classes="1" methods="4" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="10" coveredstatements="10" elements="14" coveredelements="14"/>
+      </file>
+    </package>
+    <metrics files="2" loc="96" ncloc="72" classes="2" methods="7" coveredmethods="7" conditionals="0" coveredconditionals="0" statements="17" coveredstatements="17" elements="24" coveredelements="24"/>
+  </project>
+</coverage>
