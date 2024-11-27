@@ -1,5 +1,6 @@
 # https://phpstan.org/config-reference
 # https://doc.nette.org/en/neon/format
+
 parameters:
     bootstrapFiles:
         - tests/bootstrap.php
@@ -7,6 +8,6 @@ parameters:
     paths:
         - src
         - tests
-#    phpVersion:
-#        min: 80000 # PHP 8.0.0
-#        max: 80313 # PHP 8.3.13
+    phpVersion:
+        min: 80100 # PHP 8.1.0
+        max: 80313 # PHP 8.3.13
