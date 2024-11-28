@@ -4,7 +4,7 @@
     "description": "A PHP library with several classes to manage tests for the php unit library",
     "keywords": ["php", "ht7", "test", "php-unit"],
     "homepage": "https://github.com/1stthomas/ht7-test",
-    "license": "GNU General Public License v3.0",
+    "license": "GPL-3.0-only",
     "authors": [
         {
             "name": "1stthomas",
