@@ -5,7 +5,17 @@
 [![Github Actions Code Analysis Status](https://github.com/1stthomas/ht7-test/actions/workflows/analysis.yml/badge.svg?branch=master)](https://github.com/1stthomas/ht7-test/actions/workflows/analysis.yml)&nbsp;&nbsp;
 ![Github Actions Coverage Status](https://github.com/1stthomas/ht7-test/blob/master/doc/images/coverage.svg)
 
-Some helper classes to save some lines of code.
+Helper classes to save some lines of unit test code.
+
+## Installation
+
+Installation with composer:
+
+```sh
+
+composer require --dev 1stthomas/ht7-test
+
+```
 
 ## Testing
 

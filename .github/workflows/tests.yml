@@ -78,7 +78,7 @@ jobs:
         if: env.CODE_COVERAGE != 'none'
         uses: timkrase/phpunit-coverage-badge@v1.2.1
         with:
-          coverage_badge_path: doc/images/coverage.svg
+          coverage_badge_path: doc/images/badge-coverage.svg
           push_badge: true
           repo_token: ${{ secrets.GITHUB_TOKEN }}
         
