@@ -30,11 +30,11 @@
     <coverage>
         <report>
             <clover outputFile="clover.xml" />
-            <html  outputDirectory="log/coverage" lowUpperBound="50" highLowerBound="90" />
+            <html outputDirectory="log/coverage" lowUpperBound="50" highLowerBound="90" />
         </report>
     </coverage>
     <logging>
-        <junit outputFile="../log/phpunit_ht7-test.xml" />
+        <junit outputFile="./phpunit.xml" />
     </logging>
     <source ignoreIndirectDeprecations="true" restrictNotices="true" restrictWarnings="true">
         <include>

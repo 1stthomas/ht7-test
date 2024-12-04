@@ -36,7 +36,7 @@ jobs:
             dependencies: "highest"
 
     steps:
-      - name: Enable code coverage
+      - name: Enable code coverage and test reporting
         if: matrix.php-version == '8.3' && startsWith(matrix.operating-system, 'ubuntu') && matrix.dependencies == 'locked'
         run: printf 'CODE_COVERAGE=pcov\n' >> "$GITHUB_ENV"
 
@@ -67,7 +67,18 @@ jobs:
           composer install --no-interaction --no-progress --no-suggest
 
       - name: "Perform unit tests"
+        if: env.CODE_COVERAGE == 'none'
         run: composer test-unit
+
+      - name: "Perform unit tests with report"
+        if: env.CODE_COVERAGE != 'none'
+        run: ./vendor/bin/phpunit --configuration ./tests/phpunit.xml --no-results --testsuite Unit
+
+      - name: Test Summary
+        uses: test-summary/action@v2
+        with:
+          paths: phpunit.xml
+        if: env.CODE_COVERAGE != 'none'
 
       - name: "Perform unit tests with coverage"
         if: env.CODE_COVERAGE != 'none'
