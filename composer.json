@@ -46,10 +46,10 @@
         "cs-fix-all": "./vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --using-cache=no -v",
         "phpstan": "./vendor/bin/phpstan analyse --level max",
         "phpstan-win": ".\\vendor\\bin\\phpstan analyse --level max",
-        "test": "./vendor/bin/phpunit --configuration ./tests/phpunit.xml --testdox",
-        "test-unit": "./vendor/bin/phpunit --configuration ./tests/phpunit.xml --testdox --testsuite Unit",
-        "test-unit-win": ".\\vendor\\bin\\phpunit --configuration .\\tests\\phpunit.xml --testdox --testsuite Unit",
-        "test-win": ".\\vendor\\bin\\phpunit --configuration .\\tests\\phpunit.xml --testdox"
+        "test": "./vendor/bin/phpunit --configuration ./phpunit.xml --testdox",
+        "test-unit": "./vendor/bin/phpunit --configuration ./phpunit.xml --testdox --testsuite Unit",
+        "test-unit-win": ".\\vendor\\bin\\phpunit --configuration .\\phpunit.xml --testdox --testsuite Unit",
+        "test-win": ".\\vendor\\bin\\phpunit --configuration .\\phpunit.xml --testdox"
     },
     "support": {
         "source": "https://github.com/1stthomas/ht7-test"

@@ -27,9 +27,6 @@
     timeoutForMediumTests="10"
     timeoutForLargeTests="60"
 >
-    <logging>
-        <junit outputFile="../log/phpunit_ht7-test.xml" />
-    </logging>
     <source ignoreIndirectDeprecations="true" restrictNotices="true" restrictWarnings="true">
         <include>
             <directory suffix=".php">./src</directory>

@@ -73,7 +73,7 @@ jobs:
       - name: "Perform unit tests with report"
         if: env.CODE_COVERAGE != 'none'
         run: |
-          ./vendor/bin/phpunit --configuration ./tests/phpunit.xml --no-results --testsuite Unit
+          ./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit phpunit.xml --no-results --testsuite Unit
           ls -la
 
       - name: Test Summary
