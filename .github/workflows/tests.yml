@@ -2,9 +2,9 @@ name: "PHPUnit"
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, develop ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, develop ]
 
 jobs:
   phpunit:
@@ -24,15 +24,15 @@ jobs:
         dependencies:
           - "locked"
         operating-system:
-          - "ubuntu-latest"
+          - "ubuntu-24.04"
         composer:
           - "composer:v2"
         include:
           # - php-version: 8.3
-          #   operating-system: "ubuntu-latest"
+          #   operating-system: "ubuntu-24.04"
           #   dependencies: "lowest"
           - php-version: 8.3
-            operating-system: "ubuntu-latest"
+            operating-system: "ubuntu-24.04"
             dependencies: "highest"
 
     steps:
