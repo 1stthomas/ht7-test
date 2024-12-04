@@ -34,7 +34,7 @@
     </source>
     <testsuites>
         <testsuite name="Unit">
-            <directory>Unit/</directory>
+            <directory>tests/Unit/</directory>
             <exclude>../vendor</exclude>
         </testsuite>
     </testsuites>
