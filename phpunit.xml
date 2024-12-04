@@ -6,7 +6,7 @@
     backupStaticProperties="false"
     beStrictAboutCoverageMetadata="true"
     beStrictAboutOutputDuringTests="true"
-    bootstrap="./bootstrap.php"
+    bootstrap="./tests/bootstrap.php"
     cacheDirectory="../tmp/cache"
     cacheResult="false"
     colors="true"
