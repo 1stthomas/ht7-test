@@ -10,4 +10,4 @@ parameters:
         - tests
     phpVersion:
         min: 80100 # PHP 8.1.0
-        max: 80313 # PHP 8.3.13
+        max: 80313 # PHP 8.4.1
