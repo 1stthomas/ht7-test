@@ -33,9 +33,6 @@
             <html outputDirectory="log/coverage" lowUpperBound="50" highLowerBound="90" />
         </report>
     </coverage>
-    <logging>
-        <junit outputFile="./phpunit.xml" />
-    </logging>
     <source ignoreIndirectDeprecations="true" restrictNotices="true" restrictWarnings="true">
         <include>
             <directory suffix=".php">../src</directory>
