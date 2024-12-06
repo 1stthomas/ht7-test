@@ -80,7 +80,7 @@ jobs:
         if: env.CODE_COVERAGE != 'none'
         uses: test-summary/action@v2
         with:
-          paths: phpunit-report.xml
+          paths: phpunit-report*.xml
 
       - name: "Perform unit tests with coverage"
         if: env.CODE_COVERAGE != 'none'

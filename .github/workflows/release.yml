@@ -1,0 +1,23 @@
+name: Release
+
+on:
+  push:
+   tags:
+      - '**'
+
+jobs:
+  build-test:
+    name: Generate Version Badge
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: jaywcjlove/generated-badges@main
+      with:
+        label: version
+        status: ${{ github.ref_name }}
+        output: build/badge-version.svg
+
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./build
