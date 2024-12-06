@@ -10,11 +10,18 @@ jobs:
     name: Generate Version Badge
     runs-on: ubuntu-24.04
     steps:
-    - uses: jaywcjlove/generated-badges@main
+    - name: Setup
+      run: |
+        mkdir -p ./build
+        echo "Version: ${{ github.ref_name }}"
+        # echo "Version: ${{ github.ref_name }}" > build/version.txt
+
+    - name: Create Badge
+      uses: jaywcjlove/generated-badges@main
       with:
         label: version
         status: ${{ github.ref_name }}
-        output: build/badge-version.svg
+        output: ./build/badge-version.svg
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
