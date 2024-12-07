@@ -22,9 +22,9 @@ jobs:
       - name: "Install PHP"
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ env.PHP_VERSION }}
-          extensions: ${{ env.PHP_EXTENSIONS }}
           coverage: ${{ env.CODE_COVERAGE }}
+          extensions: ${{ env.PHP_EXTENSIONS }}
+          php-version: ${{ env.PHP_VERSION }}
           tools: ${{ env.PHP_TOOLS }}
 
       - name: Get Composer Cache Directory

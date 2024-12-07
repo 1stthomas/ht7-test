@@ -36,7 +36,7 @@
         "phpstan/phpstan": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0",
         "phpunit/phpcov": "^10.0.0",
-        "phpunit/phpunit": "^11.0"
+        "phpunit/phpunit": "^11.4"
     },
     "scripts": {
         "coco": "php -d xdebug.mode=coverage ./vendor/bin/phpunit --configuration ./tests/phpunit-cc.xml --testsuite Unit",
