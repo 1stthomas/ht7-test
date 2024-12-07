@@ -13,6 +13,7 @@ jobs:
     env:
       CODE_COVERAGE: none
       LC_ALL: en_US.UTF-8
+      PHP_EXTENSIONS: mbstring, xml, ctype, iconv
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
@@ -26,13 +27,17 @@ jobs:
           - "ubuntu-24.04"
         composer:
           - "composer:v2"
+        composer-command:
+          - "composer install --no-interaction --no-progress --no-suggest"
         include:
-          # - php-version: 8.3
-          #   operating-system: "ubuntu-24.04"
-          #   dependencies: "lowest"
-          - php-version: 8.3
+          - composer-command: "composer update --prefer-lowest --no-interaction --no-progress --no-suggest"
+            dependencies: "lowest"
             operating-system: "ubuntu-24.04"
+            php-version: 8.3
+          - composer-command: "composer update --no-interaction --no-progress --no-suggest"
             dependencies: "highest"
+            operating-system: "ubuntu-24.04"
+            php-version: 8.3
 
     steps:
       - name: Enable code coverage and test reporting
@@ -45,25 +50,29 @@ jobs:
       - name: "Install PHP"
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "${{ matrix.php-version }}"
-          extensions: mbstring, xml, ctype, iconv
+          php-version: ${{ matrix.php-version }}
+          extensions: ${{ env.PHP_EXTENSIONS }}
           coverage: ${{ env.CODE_COVERAGE }}
-          tools: ${{matrix.composer}}
+          tools: ${{ matrix.composer }}
 
-      - name: "Install lowest dependencies"
-        if: ${{ matrix.dependencies == 'lowest' }}
+      - name: "Install dependencies"
         run: |
-          composer update --prefer-lowest --no-interaction --no-progress --no-suggest
+          ${{ matrix.composer-command }}
 
-      - name: "Install highest dependencies"
-        if: ${{ matrix.dependencies == 'highest' }}
-        run: |
-          composer update --no-interaction --no-progress --no-suggest
+      # - name: "Install lowest dependencies"
+      #   if: ${{ matrix.dependencies == 'lowest' }}
+      #   run: |
+      #     composer update --prefer-lowest --no-interaction --no-progress --no-suggest
+
+      # - name: "Install highest dependencies"
+      #   if: ${{ matrix.dependencies == 'highest' }}
+      #   run: |
+      #     composer update --no-interaction --no-progress --no-suggest
   
-      - name: "Install locked dependencies"
-        if: ${{ matrix.dependencies == 'locked' }}
-        run: |
-          composer install --no-interaction --no-progress --no-suggest
+      # - name: "Install locked dependencies"
+      #   if: ${{ matrix.dependencies == 'locked' }}
+      #   run: |
+      #     composer install --no-interaction --no-progress --no-suggest
 
       - name: "Perform unit tests"
         if: env.CODE_COVERAGE == 'none'

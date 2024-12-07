@@ -1,10 +1,10 @@
 
 # ht7-test
 
-![Github Actions Coverage Status](https://github.com/1stthomas/ht7-test/blob/master/.build/badge-version.svg)
+![Github Actions Coverage Status](https://github.com/1stthomas/ht7-test/blob/master/.build/images/badge-version.svg)
 [![Github Actions Build Status](https://github.com/1stthomas/ht7-test/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/1stthomas/ht7-test/actions/workflows/tests.yml)&nbsp;&nbsp;
 [![Github Actions Code Analysis Status](https://github.com/1stthomas/ht7-test/actions/workflows/analysis.yml/badge.svg?branch=master)](https://github.com/1stthomas/ht7-test/actions/workflows/analysis.yml)&nbsp;&nbsp;
-![Github Actions Coverage Status](https://github.com/1stthomas/ht7-test/blob/master/doc/images/coverage.svg)
+![Github Actions Coverage Status](https://github.com/1stthomas/ht7-test/blob/master/.build/images/coverage.svg)
 
 Helper classes to save some lines of unit test code.
 
