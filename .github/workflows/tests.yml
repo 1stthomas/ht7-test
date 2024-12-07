@@ -30,11 +30,13 @@ jobs:
         composer-command:
           - "composer install --no-interaction --no-progress --no-suggest"
         include:
-          - composer-command: "composer update --prefer-lowest --no-interaction --no-progress --no-suggest"
+          - name: "PHP 8.3 lowest"
+            composer-command: "composer update --prefer-lowest --no-interaction --no-progress --no-suggest"
             dependencies: "lowest"
             operating-system: "ubuntu-24.04"
             php-version: 8.3
-          - composer-command: "composer update --no-interaction --no-progress --no-suggest"
+          - name: "PHP 8.3 highest"
+            composer-command: "composer update --no-interaction --no-progress --no-suggest"
             dependencies: "highest"
             operating-system: "ubuntu-24.04"
             php-version: 8.3
