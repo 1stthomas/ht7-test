@@ -1,0 +1,55 @@
+name: "PHPUnit"
+
+on:
+  push:
+    branches-ignore: [ master, develop ]
+
+jobs:
+  phpunit:
+    name: "PHPUnit"
+    env:
+      CODE_COVERAGE: none
+      LC_ALL: en_US.UTF-8
+      PHP_EXTENSIONS: mbstring, xml, ctype, iconv
+      PHP_TOOLS: "composer:v2"
+      PHP_VERSION: "8.3"
+    runs-on: "ubuntu-24.04"
+
+    steps:
+      - name: "Checkout ${{ github.repository }}"
+        uses: "actions/checkout@v4"
+
+      - name: "Install PHP"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: ${{ env.PHP_EXTENSIONS }}
+          coverage: ${{ env.CODE_COVERAGE }}
+          tools: ${{ env.PHP_TOOLS }}
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: "Install locked dependencies"
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: |
+          composer install --no-interaction --no-progress --no-suggest
+
+      - name: "Perform unit tests"
+        run: |
+          ./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit phpunit-report.xml --testsuite Unit
+
+      - name: Test Summary
+        if: env.CODE_COVERAGE != 'none'
+        uses: test-summary/action@v2
+        with:
+          paths: phpunit-report*.xml

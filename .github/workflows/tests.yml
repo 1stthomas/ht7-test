@@ -9,11 +9,10 @@ on:
 jobs:
   phpunit:
     name: "PHPUnit"
-    env:
-      LC_ALL: en_US.UTF-8
-      CODE_COVERAGE: none
     continue-on-error: ${{ matrix.php-version == '8.3' }}
-
+    env:
+      CODE_COVERAGE: none
+      LC_ALL: en_US.UTF-8
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
@@ -44,7 +43,7 @@ jobs:
         uses: "actions/checkout@v4"
 
       - name: "Install PHP"
-        uses: shivammathur/setup-php@2.31.1
+        uses: shivammathur/setup-php@v2
         with:
           php-version: "${{ matrix.php-version }}"
           extensions: mbstring, xml, ctype, iconv
@@ -70,10 +69,10 @@ jobs:
         if: env.CODE_COVERAGE == 'none'
         run: composer test-unit
 
-      - name: "Perform unit tests with report"
+      - name: "Perform unit tests with test report"
         if: env.CODE_COVERAGE != 'none'
         run: |
-          ./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit phpunit-report.xml --no-results --testsuite Unit
+          ./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit phpunit-report.xml --testsuite Unit
           ls -la
 
       - name: Test Summary
@@ -91,7 +90,7 @@ jobs:
         if: env.CODE_COVERAGE != 'none'
         uses: timkrase/phpunit-coverage-badge@v1.2.1
         with:
-          coverage_badge_path: docs/images/badge-coverage.svg
+          coverage_badge_path: .build/images/badge-coverage.svg
           push_badge: true
           repo_token: ${{ secrets.GITHUB_TOKEN }}
         
