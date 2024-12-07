@@ -74,6 +74,7 @@ jobs:
         run: |
           ./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit phpunit-report.xml --testsuite Unit
           ls -la
+          cat phpunit-report.xml
 
       - name: Test Summary
         if: env.CODE_COVERAGE != 'none'
