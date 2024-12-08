@@ -8,7 +8,7 @@ on:
 
 jobs:
   PHPStan:
-    name: PHPStan
+    # name: PHPStan
     runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
@@ -20,7 +20,7 @@ jobs:
         php_version: 8.3
 
   PHP-CS-Fixer:
-    name: PHP-CS-Fixer
+    # name: PHP-CS-Fixer
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -50,6 +50,7 @@ jobs:
       CODE_COVERAGE: none
       LC_ALL: en_US.UTF-8
       PHP_EXTENSIONS: mbstring, xml, ctype, iconv
+    needs: [PHPStan, PHP-CS-Fixer]
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
