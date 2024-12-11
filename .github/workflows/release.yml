@@ -6,6 +6,23 @@ on:
       - '**'
 
 jobs:
+  planner:
+    # https://stackoverflow.com/questions/60589373/how-to-force-job-to-exit-in-github-actions-step#answer-77820236
+    name: Determine which jobs to run
+    runs-on: ubuntu-latest
+    # To keep it simple name the step and output the same as job
+    outputs:
+      foo: ${{ steps.foo.outputs.should-run }}
+
+    steps:
+      # Checkout if necessary to determine whether 'foo' needs to run
+      # - uses: actions/checkout@v4
+
+      - name: Mark foo job as 'to be run'
+        id: foo
+        # Replace 'true' with your condition
+        run: echo "should-run=true" >> $GITHUB_OUTPUT
+
   build-test:
     name: Generate Version Badge
     runs-on: ubuntu-24.04
