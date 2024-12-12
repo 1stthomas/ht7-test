@@ -1,27 +1,73 @@
 name: Release
 
 on:
-  push:
-   tags:
-      - '**'
+  pull_request:
+    branches:
+      - master
+    types: [labeled]
 
 jobs:
-  planner:
-    # https://stackoverflow.com/questions/60589373/how-to-force-job-to-exit-in-github-actions-step#answer-77820236
-    name: Determine which jobs to run
-    runs-on: ubuntu-latest
-    # To keep it simple name the step and output the same as job
-    outputs:
-      foo: ${{ steps.foo.outputs.should-run }}
+  check:
+    name: "Check PR"
+    if: ${{ github.event.label.name != 'actions:release' }}
+    runs-on: "ubuntu-24.04"
 
     steps:
-      # Checkout if necessary to determine whether 'foo' needs to run
-      # - uses: actions/checkout@v4
+      - name: "Exit all non 'actions:release' labeled PRs"
+        env:
+          GH_TOKEN: ${{ secrets. GITHUB_TOKEN }}
+        run: |
+          gh run cancel ${{ github.run_id }}
+          gh run watch ${{ github.run_id }}
 
-      - name: Mark foo job as 'to be run'
-        id: foo
-        # Replace 'true' with your condition
-        run: echo "should-run=true" >> $GITHUB_OUTPUT
+  phpunit:
+    name: "PHPUnit"
+    env:
+      CODE_COVERAGE: none
+      LC_ALL: en_US.UTF-8
+      PHP_EXTENSIONS: mbstring, xml, ctype, iconv
+      PHP_TOOLS: "composer:v2"
+      PHP_VERSION: "8.4"
+    runs-on: "ubuntu-24.04"
+
+    steps:
+      - name: "Checkout ${{ github.repository }}"
+        uses: "actions/checkout@v4"
+
+      - name: "Install PHP"
+        uses: shivammathur/setup-php@v2
+        with:
+          coverage: ${{ env.CODE_COVERAGE }}
+          extensions: ${{ env.PHP_EXTENSIONS }}
+          php-version: ${{ env.PHP_VERSION }}
+          tools: ${{ env.PHP_TOOLS }}
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: "Install locked dependencies"
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: |
+          composer install --no-interaction --no-progress --no-suggest
+
+      - name: "Perform unit tests"
+        run: |
+          ./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit phpunit-report.xml --testsuite Unit
+
+      - name: Test Summary
+        if: env.CODE_COVERAGE != 'none'
+        uses: test-summary/action@v2
+        with:
+          paths: phpunit-report*.xml
 
   build-test:
     name: Generate Version Badge
