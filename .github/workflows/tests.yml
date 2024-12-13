@@ -117,6 +117,13 @@ jobs:
           ls -la
           cat phpunit-report.xml
 
+      - name: "Prepare test report"
+        if: env.CODE_COVERAGE != 'none'
+        run: |
+          php -v
+          php ./.scripts/prepare_report_for_test_summary.php
+          cat phpunit-report.xml
+
       - name: Test Summary
         if: env.CODE_COVERAGE != 'none'
         uses: test-summary/action@v2
