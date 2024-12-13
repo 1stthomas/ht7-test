@@ -8,8 +8,10 @@ $dom->loadXML(file_get_contents('./phpunit-report.xml'));
 
 $testsuites = $dom->getElementsByTagName('testsuites')->item(0);
 $testsuiteTotal = $testsuites->firstChild;
-$testsuiteUnit = $testsuiteTotal->firstChild;
-$testsuitesSearched = $testsuiteUnit->childNodes;
+// $testsuiteUnit = $testsuiteTotal->firstChild;
+// $testsuitesSearched = $testsuiteUnit->childNodes;
+$testsuitesSearched = $testsuiteTotal->childNodes;
+
 
 $testsuites->replaceChildren($testsuitesSearched);
 $dom->save('./phpunit-report.xml');
