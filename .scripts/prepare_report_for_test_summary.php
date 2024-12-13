@@ -10,8 +10,11 @@ $testsuites = $dom->getElementsByTagName('testsuites')->item(0);
 $testsuiteTotal = $testsuites->firstChild;
 // $testsuiteUnit = $testsuiteTotal->firstChild;
 // $testsuitesSearched = $testsuiteUnit->childNodes;
-$testsuitesSearched = $testsuiteTotal->childNodes;
+echo 'Length: ' . $testsuiteTotal->childNodes->length . PHP_EOL;
+$testsuiteSearched = $testsuiteTotal->firstChild;
+// $testsuitesSearched = $testsuiteTotal->childNodes;
 
 
-$testsuites->replaceChildren($testsuitesSearched);
+// $testsuites->replaceChildren($testsuitesSearched);
+$testsuites->replaceChild($testsuiteSearched, $testsuiteTotal);
 $dom->save('./phpunit-report.xml');
