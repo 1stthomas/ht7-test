@@ -11,12 +11,15 @@ echo '-------------------' . PHP_EOL;
 
 
 $testsuites = $dom->getElementsByTagName('testsuites')->item(0);
+/** @var DOMElement $testsuiteTotal */
 $testsuiteTotal = $testsuites->firstChild;
 // $testsuiteUnit = $testsuiteTotal->firstChild;
 // $testsuitesSearched = $testsuiteUnit->childNodes;
 echo 'Length: ' . $testsuiteTotal->childNodes->length . PHP_EOL;
+echo 'tag name 1: ' . $testsuiteTotal->nodeName . PHP_EOL;
+print_r($testsuiteTotal->getAttributeNames());
 $testsuiteSearched = $testsuiteTotal->firstChild;
-echo 'tag name: ' . $testsuiteSearched->nodeName . PHP_EOL;
+echo 'tag name 2: ' . $testsuiteSearched->nodeName . PHP_EOL;
 // $testsuitesSearched = $testsuiteTotal->childNodes;
 
 
