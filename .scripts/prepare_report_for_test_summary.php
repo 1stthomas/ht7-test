@@ -15,13 +15,13 @@ $testsuites = $dom->getElementsByTagName('testsuites')->item(0);
 // Find <testsuite name="Unit"/>
 // $testsuite = $dom->getElementsByTagName('testsuite')->item(0);
 // echo 'name: ' . $testsuite->getAttribute('name') . PHP_EOL;
-$testsuite_root = array_reduce(iterator_to_array($dom->getElementsByTagName('testsuite')), function ($carry, \DOMElement $item) use ($testsuites): \DOMElement {
+$testsuite_root = array_reduce(iterator_to_array($dom->getElementsByTagName('testsuite')), function ($carry, \DOMElement $item) use ($testsuites): ?\DOMElement {
     if ($item->parentNode === $testsuites) {
         $carry = $item;
     }
     return $carry;
 });
-$testsuite_unit = array_reduce(iterator_to_array($dom->getElementsByTagName('testsuite')), function ($carry, \DOMElement $item): \DOMElement {
+$testsuite_unit = array_reduce(iterator_to_array($dom->getElementsByTagName('testsuite')), function ($carry, \DOMElement $item): ?\DOMElement {
     if ($item->getAttribute('name') === 'Unit') {
         $carry = $item;
     }
