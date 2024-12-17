@@ -131,7 +131,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: phpunit-report.xml
-          path: .artifacts/
+          path: .artifacts/phpunit-report.xml
           retention-days: 1
 
       # - name: "Prepare test report"
