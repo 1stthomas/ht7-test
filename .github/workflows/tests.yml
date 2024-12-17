@@ -131,7 +131,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: phpunit-report
-          path: .artifacts/phpunit-report.xml
+          path: phpunit-report.xml
+          retention-days: 1
 
       # - name: "Prepare test report"
       #   if: env.CODE_COVERAGE != 'none'
@@ -185,8 +186,8 @@ jobs:
         - name: Retrieve PHPUnit report
           uses: actions/download-artifact@v4
           with:
-            name: phpunit-report
-            path: .artifacts/phpunit-report.xml
+            name: phpunit-report.xml
+            path: .
 
         - name: Transform report to CTRF
           run: |
