@@ -1,7 +1,10 @@
 /coverage/
 /log/
 /nbproject/
+/*/*.log
 /tmp/
 /vendor/
 /clover.xml
+/phpunit-report.xml
 /php_errors.log
+/test*.php
