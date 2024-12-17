@@ -115,7 +115,7 @@ jobs:
         run: |
           ./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit ./.artifacts/phpunit-report.xml
           ls -la
-          cat phpunit-report.xml
+          cat ./.artifacts/phpunit-report.xml
 
       # - name: "Transform to CTRF report"
       #   run: |
