@@ -120,7 +120,7 @@ jobs:
       - name: "Transform to CTRF report"
         run: |
           sudo apt install npm
-          npx-v
+          npx -v
           npx junit-to-ctrf ./phpunit-report.xml -o ./phpunit-report.ctrf.json
 
       - name: "Generate report"
