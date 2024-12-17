@@ -117,18 +117,28 @@ jobs:
           ls -la
           cat phpunit-report.xml
 
-      - name: "Prepare test report"
-        if: env.CODE_COVERAGE != 'none'
+      - name: "Transform to CTRF report"
         run: |
-          php -v
-          php ./.scripts/prepare_report_for_test_summary.php
-          cat phpunit-report.xml
+          sudo apt install npm
+          npx-v
+          npx junit-to-ctrf ./phpunit-report.xml -o ./phpunit-report.ctrf.json
 
-      - name: Test Summary
-        if: env.CODE_COVERAGE != 'none'
-        uses: test-summary/action@v2
-        with:
-          paths: phpunit-report.xml
+      - name: "Generate report"
+        run: |
+          npx github-actions-ctrf ./phpunit-report.ctrf.json
+
+      # - name: "Prepare test report"
+      #   if: env.CODE_COVERAGE != 'none'
+      #   run: |
+      #     php -v
+      #     php ./.scripts/prepare_report_for_test_summary.php
+      #     cat phpunit-report.xml
+
+      # - name: Test Summary
+      #   if: env.CODE_COVERAGE != 'none'
+      #   uses: test-summary/action@v2
+      #   with:
+      #     paths: phpunit-report.xml
 
       - name: "Perform unit tests with coverage"
         if: env.CODE_COVERAGE != 'none'
