@@ -192,8 +192,8 @@ jobs:
         - name: Transform report to CTRF
           run: |
             npx -v
-            npx junit-to-ctrf .artifacts/phpunit-report.xml -o ./phpunit-report.ctrf.json
+            npx junit-to-ctrf .artifacts/phpunit-report.xml -o phpunit-report.ctrf.json
 
         - name: "Generate report"
           run: |
-            npx github-actions-ctrf ./phpunit-report.ctrf.json
+            npx github-actions-ctrf .artifacts/phpunit-report.ctrf.json
