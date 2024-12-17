@@ -117,15 +117,21 @@ jobs:
           ls -la
           cat phpunit-report.xml
 
-      - name: "Transform to CTRF report"
-        run: |
-          sudo apt install npm
-          npx -v
-          npx junit-to-ctrf ./phpunit-report.xml -o ./phpunit-report.ctrf.json
+      # - name: "Transform to CTRF report"
+      #   run: |
+      #     sudo apt install npm
+      #     npx -v
+      #     npx junit-to-ctrf ./phpunit-report.xml -o ./phpunit-report.ctrf.json
 
-      - name: "Generate report"
-        run: |
-          npx github-actions-ctrf ./phpunit-report.ctrf.json
+      # - name: "Generate report"
+      #   run: |
+      #     npx github-actions-ctrf ./phpunit-report.ctrf.json
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: phpunit-report
+          path: .artifacts/phpunit-report.xml
 
       # - name: "Prepare test report"
       #   if: env.CODE_COVERAGE != 'none'
@@ -162,3 +168,29 @@ jobs:
       #     github_token: ${{ secrets.GITHUB_TOKEN }}
       #     user_name: 'github-actions[bot]'
       #     user_email: 'github-actions[bot]@users.noreply.github.com'
+
+  test-report:
+      runs-on: ubuntu-24.04
+      steps:
+        - uses: actions/checkout@v4
+  
+        - name: Get changed files
+          uses: actions/setup-node@v4
+          with:
+            node-version: 'latest'
+            # cache-dependency-path: ''
+
+        - name: Retrieve PHPUnit report
+          uses: actions/download-artifact@v4
+          with:
+            name: phpunit-report
+            path: .artifacts/phpunit-report.xml
+
+        - name: Transform report to CTRF
+          run: |
+            npx -v
+            npx junit-to-ctrf .artifacts/phpunit-report.xml -o ./phpunit-report.ctrf.json
+
+        - name: "Generate report"
+          run: |
+            npx github-actions-ctrf ./phpunit-report.ctrf.json
