@@ -130,8 +130,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: phpunit-report
-          path: .artifacts/phpunit-report.xml
+          name: phpunit-report.xml
+          path: .artifacts/
           retention-days: 1
 
       # - name: "Prepare test report"
@@ -186,8 +186,8 @@ jobs:
         - name: Retrieve PHPUnit report
           uses: actions/download-artifact@v4
           with:
-            name: phpunit-report
-            path: .artifacts/phpunit-report.xml
+            name: phpunit-report.xml
+            path: .artifacts/
 
         - name: Transform report to CTRF
           run: |
