@@ -117,35 +117,12 @@ jobs:
           ls -la
           cat ./.artifacts/phpunit-report.xml
 
-      # - name: "Transform to CTRF report"
-      #   run: |
-      #     sudo apt install npm
-      #     npx -v
-      #     npx junit-to-ctrf ./phpunit-report.xml -o ./phpunit-report.ctrf.json
-
-      # - name: "Generate report"
-      #   run: |
-      #     npx github-actions-ctrf ./phpunit-report.ctrf.json
-
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: phpunit-report
           path: .artifacts/phpunit-report.xml
           retention-days: 1
-
-      # - name: "Prepare test report"
-      #   if: env.CODE_COVERAGE != 'none'
-      #   run: |
-      #     php -v
-      #     php ./.scripts/prepare_report_for_test_summary.php
-      #     cat phpunit-report.xml
-
-      # - name: Test Summary
-      #   if: env.CODE_COVERAGE != 'none'
-      #   uses: test-summary/action@v2
-      #   with:
-      #     paths: phpunit-report.xml
 
       - name: "Perform unit tests with coverage"
         if: env.CODE_COVERAGE != 'none'
@@ -177,25 +154,40 @@ jobs:
       steps:
         - uses: actions/checkout@v4
   
-        - name: Get changed files
+        - name: Setup node.js
           uses: actions/setup-node@v4
           with:
             node-version: 'latest'
             # cache-dependency-path: ''
 
-        - name: Retrieve PHPUnit report
+        - name: Retriev PHPUnit test report
           uses: actions/download-artifact@v4
           with:
             name: phpunit-report
             path: .artifacts/
 
-        - name: Transform report to CTRF
+        - name: Get errors count
           run: |
-            npx -v
-            npx junit-to-ctrf .artifacts/phpunit-report.xml -o .artifacts/phpunit-report.ctrf.json
-            ls -la
-            ls -la .artifacts
+            echo "grep -E 'name="/home/ubuntu' phpunit-report.xml | grep -o -P '(?<=errors=").*(?=" fail)'" >> $GITHUB_OUTPUT
 
-        - name: "Generate report"
+        - name: Get failures count
+          id: failures-count
           run: |
-            npx github-actions-ctrf .artifacts/phpunit-report.ctrf.json
+            echo "grep -E 'name="/home/ubuntu' phpunit-report.xml | grep -o -P '(?<=failures=").*(?=" skipped)'" >> $GITHUB_OUTPUT
+
+        - name: Get skipped count
+          run: |
+            echo "grep -E 'name="/home/ubuntu' phpunit-report.xml | grep -o -P '(?<=skipped=").*(?=" time)'" >> $GITHUB_OUTPUT
+
+        - name: Transform test report to CTRF
+          run: |
+            npx junit-to-ctrf .artifacts/phpunit-report.xml -o .artifacts/phpunit-report.ctrf.json
+
+        - name: Generate test summary
+          run: |
+            npx github-actions-ctrf summary .artifacts/phpunit-report.ctrf.json
+  
+        - name: Generate failed summary
+          if: steps.failures-count.outputs.stdout != '0'
+          run: |
+            npx github-actions-ctrf failed .artifacts/phpunit-report.ctrf.json

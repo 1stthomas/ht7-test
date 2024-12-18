@@ -39,6 +39,7 @@ final class DefaultMockTest extends TestCase
 
         /** @var MockObject&TestHelperWithoutConstruct $mock */
         $this->assertSame($expected, $mock->getTest1($msg));
+        $this->assertTrue(false);
     }
 
     #[Test]
