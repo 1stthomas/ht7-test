@@ -54,7 +54,7 @@ jobs:
 
   PHPUnit:
     name: "Unit Tests - PHP ${{ matrix.php-version }}, ${{ matrix.dependencies }}"
-    continue-on-error: ${{ matrix.php-version == '8.3' }}
+    continue-on-error: ${{ matrix.php-version == '8.4' }}
     env:
       CODE_COVERAGE: none
       LC_ALL: en_US.UTF-8
@@ -113,9 +113,9 @@ jobs:
       - name: "Perform unit tests with test report"
         if: env.CODE_COVERAGE != 'none'
         run: |
+          ls -la
           ./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit ./.artifacts/phpunit-report.xml
           ls -la
-          cat ./.artifacts/phpunit-report.xml
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
