@@ -212,4 +212,7 @@ jobs:
 
       - name: Fail pipeline
         if: env.ERROR_COUNT != '0' || env.FAILURE_COUNT != '0'
-        run: exit 1
+        run: |
+          echo "err: " ${{ env.ERROR_COUNT }}
+          echo "fail: " ${{ env.FAILURE_COUNT }}
+          exit 1
