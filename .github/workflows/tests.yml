@@ -149,6 +149,10 @@ jobs:
       #     user_email: 'github-actions[bot]@users.noreply.github.com'
 
   test-report:
+    env:
+      ERROR_COUNT: 0
+      FAILURE_COUNT: 0
+      SKIPPED_COUNT: 0
     if: always()
     needs:
       - PHPUnit
@@ -170,16 +174,16 @@ jobs:
 
       - name: Get errors count
         run: |
-          echo "error_count=grep -E 'name=\"/home/ubuntu' phpunit-report.xml | grep -o -P '(?<=errors=\").*(?=\" fail)'" >> $env:GITHUB_OUTPUT
+          echo "ERROR_COUNT=grep -E 'name=\"/home/ubuntu' phpunit-report.xml | grep -o -P '(?<=errors=\").*(?=\" fail)'" >> "$GITHUB_ENV"
 
       - name: Get failures count
         id: failures-count
         run: |
-          echo "failure_count=grep -E 'name=\"/home/ubuntu' phpunit-report.xml | grep -o -P '(?<=failures=\").*(?=\" skipped)'" >> $env:GITHUB_OUTPUT
+          echo "FAILURE_COUNT=grep -E 'name=\"/home/ubuntu' phpunit-report.xml | grep -o -P '(?<=failures=\").*(?=\" skipped)'" >> "$GITHUB_ENV"
 
       - name: Get skipped count
         run: |
-          echo "skipped_count=grep -E 'name=\"/home/ubuntu' phpunit-report.xml | grep -o -P '(?<=skipped=\").*(?=\" time)'" >> $env:GITHUB_OUTPUT
+          echo "SKIPPED_COUNT=grep -E 'name=\"/home/ubuntu' phpunit-report.xml | grep -o -P '(?<=skipped=\").*(?=\" time)'" >> "$GITHUB_ENV"
 
       - name: Transform test report to CTRF
         run: |
@@ -190,13 +194,13 @@ jobs:
           npx github-actions-ctrf summary .artifacts/phpunit-report.ctrf.json
 
       - name: Generate failed summary
-        if: steps.failures-count.outputs.failure_count != '0'
+        if: env.FAILURE_COUNT != '0'
         run: |
           echo "should add failed summary" 
           npx github-actions-ctrf failed .artifacts/phpunit-report.ctrf.json
 
       - name: Generate skipped summary
-        if: steps.failures-count.outputs.skipped_count != '0'
+        if: env.SKIPPED_COUNT != '0'
         run: |
           echo "should add skipped summary" 
           npx github-actions-ctrf skipped .artifacts/phpunit-report.ctrf.json
@@ -207,7 +211,7 @@ jobs:
           npx github-actions-ctrf tests .artifacts/phpunit-report.ctrf.json
 
       - name: Generate tests list
-        if: steps.failures-count.outputs.failure_count != '0'
+        if: env.FAILURE_COUNT != '0'
         run: |
           echo "should add tests list" 
           npx github-actions-ctrf ai .artifacts/phpunit-report.ctrf.json
