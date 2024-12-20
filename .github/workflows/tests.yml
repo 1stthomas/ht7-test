@@ -183,8 +183,8 @@ jobs:
         run: |
           ls -la
           ls -la .artifacts
-          echo $(grep -E "name=\"/home/ubuntu" .artifacts/phpunit-report.xml)
-          echo $(grep -E "name=\"/home/ubuntu" .artifacts/phpunit-report.xml | grep -o -P "(?<=failures=\").*(?=" skipped)")
+          echo "" | grep -E "name=\"/home/ubuntu" ./.artifacts/phpunit-report.xml
+          echo "" | "$(grep -E "name=\"/home/ubuntu" .artifacts/phpunit-report.xml | grep -o -P "(?<=failures=\").*(?=" skipped)")"
           echo $(FAILURE_COUNT=grep -E "name=\"/home/ubuntu" .artifacts/phpunit-report.xml | grep -o -P "(?<=failures=\").*(?=" skipped)")
           echo "$FAILURE_COUNT"
           echo "$FAILURE_COUNT" >> "$env:GITHUB_ENV"
