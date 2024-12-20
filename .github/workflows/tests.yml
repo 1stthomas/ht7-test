@@ -179,7 +179,9 @@ jobs:
         id: failures-count
         # echo "FAILURE_COUNT=grep -E 'name=\"/home/ubuntu' phpunit-report.xml | grep -o -P '(?<=failures=\").*(?=\" skipped)'" >> "$GITHUB_ENV"
         # echo $(FAILURE_COUNT=grep -E 'name=\"/home/ubuntu' phpunit-report.xml | grep -o -P '(?<=failures=\").*(?=\" skipped)') >> "$GITHUB_ENV"
+        # echo $(FAILURE_COUNT=grep -E 'name=\"/home/ubuntu' phpunit-report.xml | grep -o -P '(?<=failures=\").*(?=\" skipped)')
         run: |
+          grep -E 'name=\"/home/ubuntu' phpunit-report.xml | grep -o -P '(?<=failures=\").*(?=\" skipped)'
           echo $(FAILURE_COUNT=grep -E 'name=\"/home/ubuntu' phpunit-report.xml | grep -o -P '(?<=failures=\").*(?=\" skipped)')
           echo "$FAILURE_COUNT"
           echo "$FAILURE_COUNT" >> "$GITHUB_ENV"
