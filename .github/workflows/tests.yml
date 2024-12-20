@@ -207,6 +207,8 @@ jobs:
 
       - name: Generate tests list
         run: |
+          echo "err: " ${{ env.ERROR_COUNT }}
+          echo "fail: " ${{ env.FAILURE_COUNT }}
           echo "should add tests list" 
           npx github-actions-ctrf tests .artifacts/phpunit-report.ctrf.json
 
