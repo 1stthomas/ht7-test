@@ -112,10 +112,7 @@ jobs:
 
       - name: "Perform unit tests with test report"
         if: env.CODE_COVERAGE != 'none'
-        run: |
-          ls -la
-          ./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit ./.artifacts/phpunit-report.xml
-          ls -la
+        run: ./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit ./.artifacts/phpunit-report.xml
 
       - name: Upload artifact
         if: always() && env.CODE_COVERAGE != 'none'
