@@ -18,7 +18,7 @@ on:
 jobs:
   Action-Linting:
     name: GitHub Actions Linting
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     permissions:
       contents: read
       pull-requests: write
@@ -27,7 +27,7 @@ jobs:
       - uses: devops-actions/actionlint@v0.1.2
   # PHPStan:
   #   # name: PHPStan
-  #   runs-on: ubuntu-24.04
+  #   runs-on: ubuntu-22.04
   #   steps:
   #   - uses: actions/checkout@v4
   #   - uses: php-actions/composer@v6
@@ -39,7 +39,7 @@ jobs:
 
   # PHP-CS-Fixer:
   #   # name: PHP-CS-Fixer
-  #   runs-on: ubuntu-24.04
+    # runs-on: ubuntu-22.04
   #   steps:
   #     - uses: actions/checkout@v4
 
@@ -80,7 +80,7 @@ jobs:
         dependencies:
           - "locked"
         operating-system:
-          - "ubuntu-24.04"
+          - "ubuntu-22.04"
         composer:
           - "composer:v2"
         composer-command:
@@ -88,11 +88,11 @@ jobs:
         # include:
         #   - composer-command: "composer update --prefer-lowest --no-interaction --no-progress --no-suggest"
         #     dependencies: "lowest"
-        #     operating-system: "ubuntu-24.04"
+        #     operating-system: "ubuntu-22.04"
         #     php-version: 8.4
         #   - composer-command: "composer update --no-interaction --no-progress --no-suggest"
         #     dependencies: "highest"
-        #     operating-system: "ubuntu-24.04"
+        #     operating-system: "ubuntu-22.04"
         #     php-version: 8.4
 
     steps:
@@ -162,7 +162,7 @@ jobs:
     if: always()
     needs:
       - PHPUnit
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
