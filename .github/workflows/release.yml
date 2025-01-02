@@ -10,12 +10,12 @@ jobs:
   check:
     name: "Check PR"
     if: ${{ github.event.label.name != 'actions:release' }}
-    runs-on: "ubuntu-24.04"
+    runs-on: "ubuntu-22.04"
 
     steps:
       - name: "Exit all non 'actions:release' labeled PRs"
         env:
-          GH_TOKEN: ${{ secrets. GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh run cancel ${{ github.run_id }}
           gh run watch ${{ github.run_id }}
@@ -28,7 +28,7 @@ jobs:
       PHP_EXTENSIONS: mbstring, xml, ctype, iconv
       PHP_TOOLS: "composer:v2"
       PHP_VERSION: "8.4"
-    runs-on: "ubuntu-24.04"
+    runs-on: "ubuntu-22.04"
 
     steps:
       - name: "Checkout ${{ github.repository }}"
@@ -44,8 +44,8 @@ jobs:
 
       - name: Get Composer Cache Directory
         id: composer-cache
-        run: |
-          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+        run: "|
+          echo 'dir=$(composer config cache-files-dir)' >> $GITHUB_OUTPUT"
 
       - uses: actions/cache@v4
         with:
@@ -56,28 +56,50 @@ jobs:
 
       - name: "Install locked dependencies"
         if: steps.composer-cache.outputs.cache-hit != 'true'
-        run: |
-          composer install --no-interaction --no-progress --no-suggest
+        run: "|
+          composer install --no-interaction --no-progress --no-suggest"
 
-      - name: "Perform unit tests"
-        run: |
-          ./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit phpunit-report.xml --testsuite Unit
+      # - name: "Perform unit tests"
+      #   run: |
+      #     ./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit phpunit-report.xml --testsuite Unit
 
-      - name: Test Summary
+      # - name: Test Summary
+      #   if: env.CODE_COVERAGE != 'none'
+      #   uses: test-summary/action@v2
+      #   with:
+      #     paths: phpunit-report*.xml
+
+      - name: "Unit tests with coverage"
+        run: "|
+          php ./vendor/bin/phpunit --configuration ./tests/phpunit-cc.xml --coverage-clover=clover.xml --testsuite Unit"
+
+      - name: Code coverage badge
         if: env.CODE_COVERAGE != 'none'
-        uses: test-summary/action@v2
+        uses: timkrase/phpunit-coverage-badge@v1.2.1
         with:
-          paths: phpunit-report*.xml
+          coverage_badge_path: .build/images/badge-coverage.svg
+          push_badge: true
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
 
-  build-test:
+      - name: Git push to image-data branch
+        if: env.CODE_COVERAGE != 'none' && github.event_name == 'pull_request'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          publish_dir: ./output
+          publish_branch: image-data
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+
+  build:
     name: Generate Version Badge
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     steps:
     - name: Setup
-      run: |
+      run: "|
         mkdir -p ./build
-        echo "Version: ${{ github.ref_name }}"
-        # echo "Version: ${{ github.ref_name }}" > build/version.txt
+        echo 'Version: ${{ github.event.pull_request.title }}'"
+        # echo "Version: ${{ github.event.pull_request.title }}" > build/version.txt
 
     - name: Create Badge
       uses: jaywcjlove/generated-badges@main
