@@ -189,8 +189,8 @@ jobs:
           # echo "" | "$(grep -E "name=\"/home/" .artifacts/phpunit-report.xml | grep -o -P "(?<=failures=\").*(?=" failures)")"
           # echo $(FAILURE_COUNT=grep -E "name=\"/home/" .artifacts/phpunit-report.xml | grep -o -P "(?<=failures=\").*(?=" skipped)")
           echo "nach auskommentiert..."
-          echo "$FAILURE_COUNT"
-          echo "$FAILURE_COUNT" >> "$GITHUB_ENV"
+          # echo "$FAILURE_COUNT"
+          # echo "$FAILURE_COUNT" >> "$GITHUB_ENV"
 
       - name: Get skipped count
         # echo "SKIPPED_COUNT=grep -E 'name=\"/home/ubuntu' phpunit-report.xml | grep -o -P '(?<=skipped=\").*(?=\" time)'" >> "$GITHUB_ENV"
