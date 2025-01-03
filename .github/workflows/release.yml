@@ -97,8 +97,8 @@ jobs:
     steps:
     - name: Setup
       run: |
-        "mkdir -p ./build"
-        "echo 'Version: ${{ github.event.pull_request.title }}'"
+        "mkdir -p ./build" \
+        "echo 'Version: ${{ github.event.pull_request.title }}'" \
         # "echo "Version: ${{ github.event.pull_request.title }}" > build/version.txt"
 
     - name: Create Badge
