@@ -44,8 +44,8 @@ jobs:
 
       - name: Get Composer Cache Directory
         id: composer-cache
-        run: "|
-          echo 'dir=$(composer config cache-files-dir)' >> $GITHUB_OUTPUT"
+        run: |
+          "echo 'dir=$(composer config cache-files-dir)' >> $GITHUB_OUTPUT"
 
       - uses: actions/cache@v4
         with:
@@ -56,8 +56,8 @@ jobs:
 
       - name: "Install locked dependencies"
         if: steps.composer-cache.outputs.cache-hit != 'true'
-        run: "|
-          composer install --no-interaction --no-progress --no-suggest"
+        run: |
+          "composer install --no-interaction --no-progress --no-suggest"
 
       # - name: "Perform unit tests"
       #   run: |
@@ -70,8 +70,8 @@ jobs:
       #     paths: phpunit-report*.xml
 
       - name: "Unit tests with coverage"
-        run: "|
-          php ./vendor/bin/phpunit --configuration ./tests/phpunit-cc.xml --coverage-clover=clover.xml --testsuite Unit"
+        run: |
+          "php ./vendor/bin/phpunit --configuration ./tests/phpunit-cc.xml --coverage-clover=clover.xml --testsuite Unit"
 
       - name: Code coverage badge
         if: env.CODE_COVERAGE != 'none'
@@ -96,10 +96,10 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
     - name: Setup
-      run: "|
-        mkdir -p ./build
-        echo 'Version: ${{ github.event.pull_request.title }}'"
-        # echo "Version: ${{ github.event.pull_request.title }}" > build/version.txt
+      run: |
+        "mkdir -p ./build"
+        "echo 'Version: ${{ github.event.pull_request.title }}'"
+        # "echo "Version: ${{ github.event.pull_request.title }}" > build/version.txt"
 
     - name: Create Badge
       uses: jaywcjlove/generated-badges@main
