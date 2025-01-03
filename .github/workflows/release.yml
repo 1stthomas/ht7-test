@@ -96,10 +96,12 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
     - name: Setup
+      env:
+        VERSION: ${{ github.event.pull_request.title }}
       run: |
         "mkdir -p ./build" \
-        "echo 'Version: ${{ github.event.pull_request.title }}'" \
-        # "echo "Version: ${{ github.event.pull_request.title }}" > build/version.txt"
+        "echo 'Version: $VERSION' > build/version.txt" \
+        # "echo 'Version: $VERSION' > build/version.txt"
 
     - name: Create Badge
       uses: jaywcjlove/generated-badges@main
