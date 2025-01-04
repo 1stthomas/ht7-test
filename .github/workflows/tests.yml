@@ -181,8 +181,8 @@ jobs:
 
       - name: Get errors count
         run: |
-          ERROR_COUNT=$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=errors=\").*(?=\" fail)')
-          echo ERROR_COUNT
+          ERROR_COUNT="$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=errors=\").*(?=\" fail)')"
+          echo "$ERROR_COUNT"
           echo "ERROR_COUNT=$ERROR_COUNT" >> $GITHUB_ENV
 
       - name: Get failures count
