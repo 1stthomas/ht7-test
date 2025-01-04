@@ -187,12 +187,12 @@ jobs:
       - name: Get failures count
         id: failures-count
         run: |
-          "ls -la" \
-          "ls -la .artifacts" \
-          "cat .artifacts/phpunit-report.xml" \
-          "echo 'failure count'" \
-          "echo $(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=failures=\").*(?=\" skipped)')" \
-          "echo $(FAILURE_COUNT=grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=failures=\").*(?=\" skipped)') >> '$GITHUB_ENV'"
+          ls -la
+          ls -la .artifacts
+          cat .artifacts/phpunit-report.xml
+          echo "failure count" \
+          echo "$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=failures=\").*(?=\" skipped)')" \
+          echo "$(FAILURE_COUNT=grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=failures=\").*(?=\" skipped)') >> '$GITHUB_ENV'"
 
       - name: Get skipped count
         run: |
