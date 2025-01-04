@@ -188,13 +188,14 @@ jobs:
       - name: Get failures count
         id: failures-count
         run: |
-          "FAILURE_COUNT=$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=failures=\").*(?=\" skipped)')" \
-          "echo 'FAILURE_COUNT=$FAILURE_COUNT' >> $GITHUB_ENV"
+          FAILURE_COUNT="$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=failures=\").*(?=\" skipped)')"
+          echo "$FAILURE_COUNT"
+          echo "FAILURE_COUNT=\"$FAILURE_COUNT\"" >> "$GITHUB_ENV"
 
       - name: Get skipped count
         run: |
-          "SKIPPED_COUNT=$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=skipped=\").*(?=\" time)')" \
-          "echo 'SKIPPED_COUNT=$SKIPPED_COUNT' >> $GITHUB_ENV"
+          SKIPPED_COUNT="$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=skipped=\").*(?=\" time)')"
+          echo "SKIPPED_COUNT=\"$SKIPPED_COUNT\"" >> "$GITHUB_ENV"
 
       - name: Transform test report to CTRF
         run: npx junit-to-ctrf .artifacts/phpunit-report.xml -o .artifacts/phpunit-report.ctrf.json
