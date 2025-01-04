@@ -192,15 +192,14 @@ jobs:
 
       - name: Get skipped count
         run: |
-          "echo $(SKIPPED_COUNT=grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=skipped=\").*(?=\" time)') >> '$GITHUB_ENV'"
+          "SKIPPED_COUNT=$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=skipped=\").*(?=\" time)')" \
+          "echo 'SKIPPED_COUNT=$SKIPPED_COUNT' >> $GITHUB_ENV"
 
       - name: Transform test report to CTRF
-        run: |
-          "npx junit-to-ctrf .artifacts/phpunit-report.xml -o .artifacts/phpunit-report.ctrf.json"
+        run: npx junit-to-ctrf .artifacts/phpunit-report.xml -o .artifacts/phpunit-report.ctrf.json
 
       - name: Generate test summary
-        run: |
-          "npx github-actions-ctrf summary .artifacts/phpunit-report.ctrf.json"
+        run: npx github-actions-ctrf summary .artifacts/phpunit-report.ctrf.json
 
       - name: Generate failed summary
         if: env.FAILURE_COUNT != '0'
