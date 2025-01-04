@@ -29,8 +29,8 @@ jobs:
 
       - name: Get Composer Cache Directory
         id: composer-cache
-        run: "|
-          echo 'dir=$(composer config cache-files-dir)' >> $GITHUB_OUTPUT"
+        run: |
+          "echo 'dir=$(composer config cache-files-dir)' >> $GITHUB_OUTPUT"
 
       - uses: actions/cache@v4
         with:
@@ -41,12 +41,12 @@ jobs:
 
       - name: "Install locked dependencies"
         if: steps.composer-cache.outputs.cache-hit != 'true'
-        run: "|
-          composer install --no-interaction --no-progress --no-suggest"
+        run: |
+          "composer install --no-interaction --no-progress --no-suggest"
 
       - name: "Perform unit tests"
-        run: "|
-          ./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit phpunit-report.xml --testsuite Unit"
+        run: |
+          "./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit phpunit-report.xml --testsuite Unit"
 
       - name: Test Summary
         if: env.CODE_COVERAGE != 'none'
