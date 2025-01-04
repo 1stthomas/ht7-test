@@ -180,7 +180,9 @@ jobs:
           path: .artifacts/
 
       - name: Get errors count
-        run: "echo \"ERROR_COUNT=$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=errors=\").*(?=\" fail)')\" >> $GITHUB_ENV"
+        run: |
+          "ERROR_COUNT=$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=errors=\").*(?=\" fail)')" \
+          "echo 'ERROR_COUNT=$ERROR_COUNT' >> $GITHUB_ENV"
 
       - name: Get failures count
         id: failures-count
