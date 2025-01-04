@@ -182,14 +182,12 @@ jobs:
       - name: Get errors count
         run: |
           ERROR_COUNT="$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=errors=\").*(?=\" fail)')"
-          echo "$ERROR_COUNT"
           echo "ERROR_COUNT=\"$ERROR_COUNT\"" >> "$GITHUB_ENV"
 
       - name: Get failures count
         id: failures-count
         run: |
           FAILURE_COUNT="$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=failures=\").*(?=\" skipped)')"
-          echo "$FAILURE_COUNT"
           echo "FAILURE_COUNT=\"$FAILURE_COUNT\"" >> "$GITHUB_ENV"
 
       - name: Get skipped count
@@ -204,11 +202,11 @@ jobs:
         run: npx github-actions-ctrf summary .artifacts/phpunit-report.ctrf.json
 
       - name: Generate failed summary
-        if: env.FAILURE_COUNT != '0'
+        if: env.FAILURE_COUNT != 0
         run: npx github-actions-ctrf failed .artifacts/phpunit-report.ctrf.json
 
       - name: Generate skipped summary
-        if: env.SKIPPED_COUNT != '0'
+        if: env.SKIPPED_COUNT != 0
         run: npx github-actions-ctrf skipped .artifacts/phpunit-report.ctrf.json
 
       - name: Generate tests list
