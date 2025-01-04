@@ -186,9 +186,6 @@ jobs:
 
       - name: Get failures count
         id: failures-count
-        # echo "FAILURE_COUNT=grep -E 'name=\"/home/ubuntu' phpunit-report.xml | grep -o -P '(?<=failures=\").*(?=\" skipped)'" >> "$GITHUB_ENV"
-        # echo $(FAILURE_COUNT=grep -E 'name=\"/home/ubuntu' phpunit-report.xml | grep -o -P '(?<=failures=\").*(?=\" skipped)') >> "$GITHUB_ENV"
-        # echo $(FAILURE_COUNT=grep -E 'name=\"/home/ubuntu' phpunit-report.xml | grep -o -P '(?<=failures=\").*(?=\" skipped)')
         run: |
           "ls -la" \
           "ls -la .artifacts" \
@@ -198,8 +195,6 @@ jobs:
           "echo $(FAILURE_COUNT=grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=failures=\").*(?=\" skipped)') >> '$GITHUB_ENV'"
 
       - name: Get skipped count
-        # echo "SKIPPED_COUNT=grep -E 'name=\"/home/ubuntu' phpunit-report.xml | grep -o -P '(?<=skipped=\").*(?=\" time)'" >> "$GITHUB_ENV"
-        # echo $(SKIPPED_COUNT=grep -E 'name=\"/home/ubuntu' phpunit-report.xml | grep -o -P '(?<=skipped=\").*(?=\" time)') >> "$GITHUB_ENV"
         run: |
           "echo $(SKIPPED_COUNT=grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=skipped=\").*(?=\" time)') >> '$GITHUB_ENV'"
 
