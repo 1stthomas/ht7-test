@@ -217,8 +217,8 @@ jobs:
           npx github-actions-ctrf skipped .artifacts/phpunit-report.ctrf.json
 
       - name: Generate tests list
-        run: npx github-actions-ctrf tests .artifacts/phpunit-report.ctrf.json
+        run: npx github-actions-ctrf tests .artifacts/phpunit-report.ctrf.json --exit-on-fail
 
-      - name: Fail pipeline
-        if: env.ERROR_COUNT != '0' || env.FAILURE_COUNT != '0'
-        run: exit 1
+      # - name: Fail pipeline
+      #   if: env.ERROR_COUNT != '0' || env.FAILURE_COUNT != '0'
+      #   run: exit 1
