@@ -161,6 +161,7 @@ jobs:
       FAILURE_COUNT: 0
       SKIPPED_COUNT: 0
     if: always()
+    name: "Generate test report"
     needs:
       - PHPUnit
     runs-on: ubuntu-22.04
@@ -202,15 +203,18 @@ jobs:
         run: npx github-actions-ctrf summary .artifacts/phpunit-report.ctrf.json
 
       - name: Generate failed summary
-        if: always() && ${{ env.FAILURE_COUNT }} != '0'
+        if: ${{ env.FAILURE_COUNT }} != '0'
         run: |
           echo "env.FAILURE_COUNT: $FAILURE_COUNT"
           echo ${{ env.FAILURE_COUNT }}
           npx github-actions-ctrf failed .artifacts/phpunit-report.ctrf.json
 
       - name: Generate skipped summary
-        if: always() && ${{ env.SKIPPED_COUNT }} != '0'
-        run: npx github-actions-ctrf skipped .artifacts/phpunit-report.ctrf.json
+        if: ${{ env.SKIPPED_COUNT }} != '0'
+        run: |
+          echo "env.SKIPPED_COUNT: $SKIPPED_COUNT"
+          echo ${{ env.SKIPPED_COUNT }}
+          npx github-actions-ctrf skipped .artifacts/phpunit-report.ctrf.json
 
       - name: Generate tests list
         run: npx github-actions-ctrf tests .artifacts/phpunit-report.ctrf.json
