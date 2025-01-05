@@ -203,14 +203,14 @@ jobs:
         run: npx github-actions-ctrf summary .artifacts/phpunit-report.ctrf.json
 
       - name: Generate failed summary
-        if: ${{ env.FAILURE_COUNT }} != 0
+        if: env.FAILURE_COUNT != 0
         run: |
           echo "env.FAILURE_COUNT: $FAILURE_COUNT"
           echo ${{ env.FAILURE_COUNT }}
           npx github-actions-ctrf failed .artifacts/phpunit-report.ctrf.json
 
       - name: Generate skipped summary
-        if: ${{ env.SKIPPED_COUNT }} != 0
+        if: env.SKIPPED_COUNT != 0
         run: |
           echo "env.SKIPPED_COUNT: $SKIPPED_COUNT"
           echo ${{ env.SKIPPED_COUNT }}
