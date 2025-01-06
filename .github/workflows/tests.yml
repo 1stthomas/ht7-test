@@ -25,6 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4.1.0
       - uses: devops-actions/actionlint@v0.1.2
+
   # PHPStan:
   #   # name: PHPStan
   #   runs-on: ubuntu-22.04
@@ -42,11 +43,9 @@ jobs:
     # runs-on: ubuntu-22.04
   #   steps:
   #     - uses: actions/checkout@v4
-
   #     - name: Get changed files
   #       id: changed-files
   #       uses: tj-actions/changed-files@v45
-
   #     - name: Get extra arguments for PHP-CS-Fixer
   #       id: phpcs-intersection
   #       run: |
@@ -55,7 +54,6 @@ jobs:
   #         echo "PHPCS_EXTRA_ARGS<<EOF" >> $GITHUB_ENV
   #         echo "$EXTRA_ARGS" >> $GITHUB_ENV
   #         echo "EOF" >> $GITHUB_ENV
-
   #     - name: PHP-CS-Fixer
   #       uses: docker://oskarstark/php-cs-fixer-ga
   #       with:
@@ -100,10 +98,8 @@ jobs:
       - name: Enable code coverage and test reporting
         if: matrix.php-version == '8.4' && startsWith(matrix.operating-system, 'ubuntu') && matrix.dependencies == 'locked'
         run: printf 'CODE_COVERAGE=pcov\n' >> "$GITHUB_ENV"
-
       - name: "Checkout"
         uses: "actions/checkout@v4"
-
       - name: "Install PHP"
         uses: shivammathur/setup-php@v2
         with:
@@ -111,19 +107,15 @@ jobs:
           extensions: ${{ env.PHP_EXTENSIONS }}
           coverage: ${{ env.CODE_COVERAGE }}
           tools: ${{ matrix.composer }}
-
       - name: "Install dependencies"
         run: |
           ${{ matrix.composer-command }}
-
       - name: "Perform unit tests"
         if: env.CODE_COVERAGE == 'none'
         run: composer test-unit
-
       - name: "Perform unit tests with test report"
         if: env.CODE_COVERAGE != 'none'
         run: ./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit ./.artifacts/phpunit-report.xml
-
       - name: Upload artifact
         if: always() && env.CODE_COVERAGE != 'none'
         uses: actions/upload-artifact@v4
@@ -131,12 +123,10 @@ jobs:
           name: phpunit-report
           path: .artifacts/phpunit-report.xml
           retention-days: 1
-
       # - name: "Perform unit tests with coverage"
       #   if: env.CODE_COVERAGE != 'none'
       #   run: |
       #     php ./vendor/bin/phpunit --configuration ./tests/phpunit-cc.xml --coverage-clover=clover.xml --testsuite Unit
-
       # - name: Make code coverage badge
       #   if: env.CODE_COVERAGE != 'none'
       #   uses: timkrase/phpunit-coverage-badge@v1.2.1
@@ -144,7 +134,6 @@ jobs:
       #     coverage_badge_path: .build/images/badge-coverage.svg
       #     push_badge: true
       #     repo_token: ${{ secrets.GITHUB_TOKEN }}
-        
       # - name: Git push to image-data branch
       #   if: env.CODE_COVERAGE != 'none' && github.event_name == 'pull_request'
       #   uses: peaceiris/actions-gh-pages@v3
@@ -167,58 +156,48 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-
       - name: Setup node.js
         uses: actions/setup-node@v4
         with:
           node-version: 'latest'
           # cache-dependency-path: ''
-
       - name: Retriev PHPUnit test report
         uses: actions/download-artifact@v4
         with:
           name: phpunit-report
           path: .artifacts/
-
       - name: Get errors count
+        id: errors-count
         run: |
           ERROR_COUNT="$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=errors=\").*(?=\" fail)')"
           echo "ERROR_COUNT=\"$ERROR_COUNT\"" >> "$GITHUB_ENV"
-
       - name: Get failures count
         id: failures-count
         run: |
           FAILURE_COUNT="$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=failures=\").*(?=\" skipped)')"
           echo "FAILURE_COUNT=\"$FAILURE_COUNT\"" >> "$GITHUB_ENV"
-
+          echo "failure_count=\"$FAILURE_COUNT\"" >> "$GITHUB_OUTPUT"
       - name: Get skipped count
+        id: skipped-count
         run: |
           SKIPPED_COUNT="$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=skipped=\").*(?=\" time)')"
           echo "SKIPPED_COUNT=\"$SKIPPED_COUNT\"" >> "$GITHUB_ENV"
-
+          echo "skipped_count=\"$SKIPPED_COUNT\"" >> "$GITHUB_OUTPUT"
       - name: Transform test report to CTRF
         run: npx junit-to-ctrf .artifacts/phpunit-report.xml -o .artifacts/phpunit-report.ctrf.json
-
       - name: Generate test summary
         run: npx github-actions-ctrf summary .artifacts/phpunit-report.ctrf.json
-
       - name: Generate failed summary
-        if: env.FAILURE_COUNT != 0
+        if: ${{ steps.failures-count.outputs.failure_count }} != 0
         run: |
           echo "env.FAILURE_COUNT: $FAILURE_COUNT"
           echo ${{ env.FAILURE_COUNT }}
           npx github-actions-ctrf failed .artifacts/phpunit-report.ctrf.json
-
       - name: Generate skipped summary
-        if: env.SKIPPED_COUNT != 0
+        if: ${{ steps.skipped-count.outputs.skipped_count }} != 0
         run: |
           echo "env.SKIPPED_COUNT: $SKIPPED_COUNT"
           echo ${{ env.SKIPPED_COUNT }}
           npx github-actions-ctrf skipped .artifacts/phpunit-report.ctrf.json
-
       - name: Generate tests list
         run: npx github-actions-ctrf tests .artifacts/phpunit-report.ctrf.json --exit-on-fail
-
-      # - name: Fail pipeline
-      #   if: env.ERROR_COUNT != '0' || env.FAILURE_COUNT != '0'
-      #   run: exit 1
