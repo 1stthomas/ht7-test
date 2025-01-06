@@ -198,6 +198,8 @@ jobs:
         run: |
           echo "env.SKIPPED_COUNT: $SKIPPED_COUNT"
           echo ${{ env.SKIPPED_COUNT }}
+          echo ${{ steps.failures-count.outputs.failure_count }}
+          echo ${{ steps.skipped-count.outputs.skipped_count }}
           npx github-actions-ctrf skipped .artifacts/phpunit-report.ctrf.json
       - name: Generate tests list
         run: npx github-actions-ctrf tests .artifacts/phpunit-report.ctrf.json --exit-on-fail
