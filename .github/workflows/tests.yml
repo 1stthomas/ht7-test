@@ -183,6 +183,11 @@ jobs:
           SKIPPED_COUNT="$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=skipped=\").*(?=\" time)')"
           echo "SKIPPED_COUNT=\"$SKIPPED_COUNT\"" >> "$GITHUB_ENV"
           echo "skipped_count=\"$SKIPPED_COUNT\"" >> "$GITHUB_OUTPUT"
+          if [ "$SKIPPED_COUNT" -neq "0" ]; then
+            npx github-actions-ctrf skipped .artifacts/phpunit-report.ctrf.json
+          else
+            gh run cancel ${{ github.run_id }}
+          fi
       - name: Transform test report to CTRF
         run: npx junit-to-ctrf .artifacts/phpunit-report.xml -o .artifacts/phpunit-report.ctrf.json
       - name: Generate test summary
@@ -193,13 +198,13 @@ jobs:
           echo "env.FAILURE_COUNT: $FAILURE_COUNT"
           echo ${{ env.FAILURE_COUNT }}
           npx github-actions-ctrf failed .artifacts/phpunit-report.ctrf.json
-      - name: Generate skipped summary
-        if: ${{ steps.skipped-count.outputs.skipped_count != '0' }}
-        run: |
-          echo "env.SKIPPED_COUNT: $SKIPPED_COUNT"
-          echo ${{ env.SKIPPED_COUNT }}
-          echo ${{ steps.failures-count.outputs.failure_count }}
-          echo ${{ steps.skipped-count.outputs.skipped_count }}
-          npx github-actions-ctrf skipped .artifacts/phpunit-report.ctrf.json
+      # - name: Generate skipped summary
+      #   # if: ${{ steps.skipped-count.outputs.skipped_count != '0' }}
+      #   run: |
+      #     echo "env.SKIPPED_COUNT: $SKIPPED_COUNT"
+      #     echo ${{ env.SKIPPED_COUNT }}
+      #     echo ${{ steps.failures-count.outputs.failure_count }}
+      #     echo ${{ steps.skipped-count.outputs.skipped_count }}
+      #     npx github-actions-ctrf skipped .artifacts/phpunit-report.ctrf.json
       - name: Generate tests list
         run: npx github-actions-ctrf tests .artifacts/phpunit-report.ctrf.json --exit-on-fail
