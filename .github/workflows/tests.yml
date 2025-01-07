@@ -148,6 +148,7 @@ jobs:
     env:
       ERROR_COUNT: 0
       FAILURE_COUNT: 0
+      GH_TOKEN: ${{ github.token }}
       SKIPPED_COUNT: 0
     if: always()
     name: "Generate test report"
