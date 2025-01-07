@@ -178,7 +178,7 @@ jobs:
           echo "ERROR_COUNT=\"$ERROR_COUNT\"" >> "$GITHUB_ENV"
       - name: Generate failed test summary if necessary
         run: |
-          FAILURE_COUNT="$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=skipped=\").*(?=\" time)')"
+          FAILURE_COUNT="$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=failures=\").*(?=\" skipped)')"
           if [ "$FAILURE_COUNT" -ne "0" ]; then
             npx github-actions-ctrf failed .artifacts/phpunit-report.ctrf.json
           fi
