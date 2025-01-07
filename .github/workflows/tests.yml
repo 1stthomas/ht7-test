@@ -183,7 +183,7 @@ jobs:
           SKIPPED_COUNT="$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=skipped=\").*(?=\" time)')"
           echo "SKIPPED_COUNT=\"$SKIPPED_COUNT\"" >> "$GITHUB_ENV"
           echo "skipped_count=\"$SKIPPED_COUNT\"" >> "$GITHUB_OUTPUT"
-          if [ "$SKIPPED_COUNT" -neq "0" ]; then
+          if [ "$SKIPPED_COUNT" -ne "0" ]; then
             npx github-actions-ctrf skipped .artifacts/phpunit-report.ctrf.json
           else
             gh run cancel ${{ github.run_id }}
