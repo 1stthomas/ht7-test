@@ -184,7 +184,7 @@ jobs:
           fi
       - name: Generate skipped test summary if necessary
         run: |
-          SKIPPED_COUNT="$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=skipped=\").*(?=\" time)')"
+          SKIPPED_COUNT=$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=skipped=\").*(?=\" time)')
           if [ "$SKIPPED_COUNT" -ne "0" ]; then
             npx github-actions-ctrf skipped .artifacts/phpunit-report.ctrf.json
           fi
