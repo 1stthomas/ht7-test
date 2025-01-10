@@ -150,7 +150,7 @@ jobs:
       FAILURE_COUNT: 0
       GH_TOKEN: ${{ github.token }}
       SKIPPED_COUNT: 0
-    if: always()
+    # if: always()
     name: "Generate test report"
     needs:
       - PHPUnit
