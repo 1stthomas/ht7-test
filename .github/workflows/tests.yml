@@ -113,7 +113,7 @@ jobs:
       - name: "Perform unit tests"
         if: env.CODE_COVERAGE == 'none'
         run: composer test-unit
-      - name: "Perform unit tests with test report
+      - name: "Perform unit tests with test report"
         if: env.CODE_COVERAGE != 'none'
         run: ./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit ./.artifacts/phpunit-report.xml
       - name: Upload artifact
