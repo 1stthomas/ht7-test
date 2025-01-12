@@ -189,3 +189,7 @@ jobs:
           fi
       - name: Generate tests list
         run: npx github-actions-ctrf tests .artifacts/phpunit-report.ctrf.json --exit-on-fail
+      - name: Remove artifact
+        uses: geekyeggo/delete-artifact@v5
+        with:
+          name: phpunit-report
