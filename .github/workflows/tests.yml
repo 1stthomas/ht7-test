@@ -166,6 +166,10 @@ jobs:
         with:
           name: phpunit-report
           path: .artifacts/
+      - name: Remove artifact
+        uses: geekyeggo/delete-artifact@v5
+        with:
+          name: phpunit-report
       - name: Transform test report to CTRF
         run: npx junit-to-ctrf .artifacts/phpunit-report.xml -o .artifacts/phpunit-report.ctrf.json
       - name: Generate test summary
@@ -189,7 +193,3 @@ jobs:
           fi
       - name: Generate tests list
         run: npx github-actions-ctrf tests .artifacts/phpunit-report.ctrf.json --exit-on-fail
-      - name: Remove artifact
-        uses: geekyeggo/delete-artifact@v5
-        with:
-          name: phpunit-report
