@@ -15,6 +15,7 @@
     displayDetailsOnTestsThatTriggerNotices="true"
     displayDetailsOnTestsThatTriggerWarnings="true"
     executionOrder="depends,defects"
+    failOnDeprecation="true"
     failOnPhpunitDeprecation="true"
     failOnRisky="true"
     failOnWarning="true"
