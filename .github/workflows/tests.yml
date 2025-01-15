@@ -107,6 +107,8 @@ jobs:
           extensions: ${{ env.PHP_EXTENSIONS }}
           coverage: ${{ env.CODE_COVERAGE }}
           tools: ${{ matrix.composer }}
+      - name: "Validate composer.json and composer.lock"
+        run: "composer validate --strict"
       - name: "Install dependencies"
         run: |
           ${{ matrix.composer-command }}
