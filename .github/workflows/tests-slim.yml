@@ -19,9 +19,6 @@ jobs:
       - name: "Checkout ${{ github.repository }}"
         uses: "actions/checkout@v4"
 
-      - name: "Validate composer.json and composer.lock"
-        run: "composer validate --strict"
-
       - name: "Install PHP"
         uses: shivammathur/setup-php@v2
         with:
@@ -29,6 +26,9 @@ jobs:
           extensions: ${{ env.PHP_EXTENSIONS }}
           php-version: ${{ env.PHP_VERSION }}
           tools: ${{ env.PHP_TOOLS }}
+
+      - name: "Validate composer.json and composer.lock"
+        run: "composer validate --strict"
 
       - name: Get Composer Cache Directory
         id: composer-cache
