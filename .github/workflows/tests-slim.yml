@@ -30,10 +30,10 @@ jobs:
       - name: "Validate composer.json and composer.lock"
         run: "composer validate --strict"
 
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: |
-          "echo \"COMPOSER_CACHE_DIR=$(composer config cache-dir --working-dir=.)\" >> $GITHUB_ENV"
+      # - name: Get Composer Cache Directory
+      #   id: composer-cache
+      #   run: |
+      #     "echo \"COMPOSER_CACHE_DIR=$(composer config cache-dir --working-dir=.)\" >> $GITHUB_ENV"
 
       - uses: actions/cache@v4
         with:
