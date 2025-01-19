@@ -12,7 +12,7 @@ jobs:
       LC_ALL: en_US.UTF-8
       PHP_EXTENSIONS: mbstring, xml, ctype, iconv
       PHP_TOOLS: "composer:v2"
-      PHP_VERSION: "8.4"
+      PHP_VERSION: "8.2"
     runs-on: "ubuntu-22.04"
 
     steps:
