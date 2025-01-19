@@ -19,34 +19,30 @@ jobs:
       - name: "Checkout ${{ github.repository }}"
         uses: "actions/checkout@v4"
 
-      - name: "Install PHP"
-        uses: shivammathur/setup-php@v2
-        with:
-          coverage: ${{ env.CODE_COVERAGE }}
-          extensions: ${{ env.PHP_EXTENSIONS }}
-          php-version: ${{ env.PHP_VERSION }}
-          tools: ${{ env.PHP_TOOLS }}
-
-      - name: "Validate composer.json and composer.lock"
-        run: "composer validate --strict"
-
-      # - name: Get Composer Cache Directory
-      #   id: composer-cache
-      #   run: |
-      #     "echo \"COMPOSER_CACHE_DIR=$(composer config cache-dir --working-dir=.)\" >> $GITHUB_ENV"
-
-      - uses: actions/cache@v4
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
         with:
           path: /tmp/composer-cache
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
 
-      - name: "Install locked dependencies"
-        run: |
-          "composer install --no-interaction --no-progress --no-suggest"
+      - name: Install dependencies
+        uses: php-actions/composer@v6
+        with:
+          args: --no-interaction --no-progress --no-suggest
+          dev: yes
+          php_extensions: ${{ env.PHP_EXTENSIONS }}
+          php_version: ${{ env.PHP_VERSION }}
 
-      - name: "Perform unit tests"
-        run: |
-          "./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit phpunit-report.xml --testsuite Unit"
+      - name: Run unit test
+        uses: php-actions/phpunit@v3
+        with:
+          args: "--log-junit phpunit-report.xml"
+          configuration: phpunit.xml
+          php_extensions: ${{ env.PHP_EXTENSIONS }}
+          php_version: ${{ env.PHP_VERSION }}
+          memory_limit: 1G
+          testsuite: unit
+          version: latest
 
       - name: Test Summary
         if: env.CODE_COVERAGE != 'none'
