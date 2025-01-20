@@ -45,9 +45,3 @@ jobs:
           memory_limit: 1G
           testsuite: unit
           version: latest
-
-      - name: Test Summary
-        if: env.CODE_COVERAGE != 'none'
-        uses: test-summary/action@v2
-        with:
-          paths: phpunit-report*.xml
