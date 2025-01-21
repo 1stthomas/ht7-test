@@ -19,11 +19,13 @@ jobs:
       - name: "Checkout ${{ github.repository }}"
         uses: "actions/checkout@v4"
 
-      - name: Cache Composer dependencies
-        uses: actions/cache@v4
+      - name: Restore cached dependencies
+        id: restore-cache
+        uses: actions/cache/restore@v4
         with:
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          path: /tmp/composer-cache
+          key: ${{ runner.os }}-${{ env.PHP_VERSION }}-composer-${{ hashFiles('**/composer.lock') }}
+          path: |
+            ./vendor
 
       - name: Install dependencies
         uses: php-actions/composer@v6
@@ -34,6 +36,14 @@ jobs:
           php_extensions: ${{ env.PHP_EXTENSIONS }}
           php_version: ${{ env.PHP_VERSION }}
           progress: yes
+
+      - name: Cache Composer dependencies
+        id: cache-composer-dependencies
+        if: always() && steps.restore-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          key: ${{ steps.restore-cache.outputs.cache-primary-key }}
+          path: ./vendor
 
       - name: Run unit test
         uses: php-actions/phpunit@v3
