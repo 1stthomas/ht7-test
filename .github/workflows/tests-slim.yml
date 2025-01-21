@@ -17,7 +17,7 @@ jobs:
       - run: "composer validate --strict"
 
   phpunit:
-    name: "PHPUnit"
+    name: PHPUnit
     env:
       CODE_COVERAGE: none
       LC_ALL: en_US.UTF-8
@@ -28,7 +28,13 @@ jobs:
     runs-on: "ubuntu-22.04"
 
     steps:
-      - name: "Checkout ${{ github.repository }}"
+      - name: Setup PHP ${{ env.PHP_VERSION }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: ${{ env.PHP_EXTENSIONS }}
+
+      - name: Checkout ${{ github.repository }}
         uses: "actions/checkout@v4"
 
       - name: Restore cached dependencies
@@ -40,14 +46,9 @@ jobs:
             ./vendor
 
       - name: Install dependencies
-        uses: php-actions/composer@v6
-        with:
-          args: --no-suggest
-          dev: yes
-          interaction: no
-          php_extensions: ${{ env.PHP_EXTENSIONS }}
-          php_version: ${{ env.PHP_VERSION }}
-          progress: yes
+        if: steps.restore-cache.outputs.cache-hit != 'true'
+        run: |
+          "composer install --no-interaction --no-progress --no-suggest"
 
       - name: Cache Composer dependencies
         id: cache-composer-dependencies
