@@ -51,9 +51,7 @@ jobs:
 
       - name: Install dependencies
         # if: steps.restore-cache.outputs.cache-hit != 'true'
-        run: |
-          "composer -V"
-          "composer install --no-interaction --no-progress --no-suggest"
+        run: composer install --no-interaction --no-progress --no-suggest
 
       # - name: Cache Composer dependencies
       #   id: cache-composer-dependencies
