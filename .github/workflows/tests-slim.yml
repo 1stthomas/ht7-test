@@ -23,7 +23,7 @@ jobs:
       LC_ALL: en_US.UTF-8
       PHP_EXTENSIONS: mbstring, xml, ctype, iconv
       PHP_TOOLS: "composer:v2"
-      PHP_VERSION: "8.2"
+      PHP_VERSION: "8.4"
     needs: [Action-Linting]
     runs-on: "ubuntu-22.04"
 
@@ -49,6 +49,7 @@ jobs:
       - name: Install dependencies
         if: steps.restore-cache.outputs.cache-hit != 'true'
         run: |
+          "composer -V"
           "composer install --no-interaction --no-progress --no-suggest"
 
       - name: Cache Composer dependencies
