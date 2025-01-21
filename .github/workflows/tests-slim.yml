@@ -28,15 +28,15 @@ jobs:
     runs-on: "ubuntu-22.04"
 
     steps:
+      - name: Checkout ${{ github.repository }}
+        uses: "actions/checkout@v4"
+
       - name: Setup PHP ${{ env.PHP_VERSION }}
         uses: shivammathur/setup-php@v2
         with:
           extensions: ${{ env.PHP_EXTENSIONS }}
           php-version: ${{ env.PHP_VERSION }}
           tools: composer:v2
-
-      - name: Checkout ${{ github.repository }}
-        uses: "actions/checkout@v4"
 
       - name: Restore cached dependencies
         id: restore-cache
