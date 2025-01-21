@@ -31,8 +31,9 @@ jobs:
       - name: Setup PHP ${{ env.PHP_VERSION }}
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ env.PHP_VERSION }}
           extensions: ${{ env.PHP_EXTENSIONS }}
+          php-version: ${{ env.PHP_VERSION }}
+          tools: composer:v2
 
       - name: Checkout ${{ github.repository }}
         uses: "actions/checkout@v4"
