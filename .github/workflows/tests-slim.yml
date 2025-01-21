@@ -24,6 +24,7 @@ jobs:
       PHP_EXTENSIONS: mbstring, xml, ctype, iconv
       PHP_TOOLS: "composer:v2"
       PHP_VERSION: "8.2"
+    needs: [Action-Linting]
     runs-on: "ubuntu-22.04"
 
     steps:
