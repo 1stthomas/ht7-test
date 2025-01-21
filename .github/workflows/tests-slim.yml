@@ -38,13 +38,16 @@ jobs:
           php-version: ${{ env.PHP_VERSION }}
           tools: composer:v2
 
-      # - name: Restore cached dependencies
-      #   id: restore-cache
-      #   uses: actions/cache/restore@v4
-      #   with:
-      #     key: ${{ runner.os }}-${{ env.PHP_VERSION }}-composer-${{ hashFiles('**/composer.lock') }}
-      #     path: |
-      #       ./vendor
+      - name: Validate PHP composer config
+        run: "composer validate --strict"
+          
+      - name: Restore cached dependencies
+        id: restore-cache
+        uses: actions/cache/restore@v4
+        with:
+          key: ${{ runner.os }}-${{ env.PHP_VERSION }}-composer-${{ hashFiles('**/composer.lock') }}
+          path: |
+            ./vendor
 
       - name: Install dependencies
         # if: steps.restore-cache.outputs.cache-hit != 'true'
@@ -52,13 +55,13 @@ jobs:
           "composer -V"
           "composer install --no-interaction --no-progress --no-suggest"
 
-      # - name: Cache Composer dependencies
-      #   id: cache-composer-dependencies
-      #   if: always() && steps.restore-cache.outputs.cache-hit != 'true'
-      #   uses: actions/cache/save@v4
-      #   with:
-      #     key: ${{ steps.restore-cache.outputs.cache-primary-key }}
-      #     path: ./vendor
+      - name: Cache Composer dependencies
+        id: cache-composer-dependencies
+        if: always() && steps.restore-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          key: ${{ steps.restore-cache.outputs.cache-primary-key }}
+          path: ./vendor
 
       - name: Run unit test
         uses: php-actions/phpunit@v3
