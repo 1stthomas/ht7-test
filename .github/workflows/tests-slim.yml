@@ -12,7 +12,7 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      - uses: actions/checkout@v4.1.0
+      - uses: actions/checkout@v4
       - uses: devops-actions/actionlint@v0.1.2
       - run: "composer validate --strict"
       - uses: actions/verify-xml-action@v2
