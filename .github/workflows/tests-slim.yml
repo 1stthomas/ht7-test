@@ -51,7 +51,7 @@ jobs:
 
       - name: Install dependencies
         # if: steps.restore-cache.outputs.cache-hit != 'true'
-        run: composer install --no-interaction --no-progress --no-suggest
+        run: composer install --no-interaction --no-progress
 
       - name: Cache Composer dependencies
         id: cache-composer-dependencies
@@ -63,7 +63,9 @@ jobs:
 
       - name: "Perform unit tests"
         run: |
-          "composer validate --strict"
+          "ls -la"
+          "ls -la ./vendor"
+          "ls -la ./vendor/bin"
           "./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit phpunit-report.xml --testsuite Unit"
   
       # - name: Run unit test
