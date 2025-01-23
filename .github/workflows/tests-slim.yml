@@ -63,10 +63,10 @@ jobs:
 
       - name: "Perform unit tests"
         run: |
-          "ls -la"
-          "ls -la ./vendor"
-          "ls -la ./vendor/bin"
-          "./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit phpunit-report.xml --testsuite Unit"
+          ls -la
+          ls -la ./vendor
+          ls -la ./vendor/bin
+          ./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit phpunit-report.xml --testsuite Unit
   
       # - name: Run unit test
       #   uses: php-actions/phpunit@v3
