@@ -63,6 +63,7 @@ jobs:
 
       - name: "Perform unit tests"
         run: |
+          "composer validate --strict"
           "./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit phpunit-report.xml --testsuite Unit"
   
       # - name: Run unit test
