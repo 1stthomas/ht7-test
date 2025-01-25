@@ -14,11 +14,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: devops-actions/actionlint@v0.1.2
-      - run: "composer validate --strict"
       - uses: action-pack/valid-xml@v1
         with:
           path: "."
           file-endings: ".xml"
+      - run: "composer validate --strict"
 
   phpunit:
     name: PHPUnit
