@@ -17,6 +17,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          cd ..
           ls -la
           pwd
           gh run cancel ${{ github.run_id }}
