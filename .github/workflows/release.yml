@@ -17,6 +17,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          ls -la
+          pwd
           gh run cancel ${{ github.run_id }}
           gh run watch ${{ github.run_id }}
 
