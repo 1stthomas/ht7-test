@@ -13,6 +13,8 @@ jobs:
     runs-on: "ubuntu-22.04"
 
     steps:
+      - name: "Checkout ${{ github.repository }}"
+        uses: "actions/checkout@v4"
       - name: "Exit all non 'actions:release' labeled PRs"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
