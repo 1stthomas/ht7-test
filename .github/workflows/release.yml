@@ -24,6 +24,7 @@ jobs:
 
   phpunit:
     name: "PHPUnit"
+    needs: [check]
     env:
       CODE_COVERAGE: none
       LC_ALL: en_US.UTF-8
