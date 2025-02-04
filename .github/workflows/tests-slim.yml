@@ -1,4 +1,5 @@
-name: "PHPUnit"
+name: PHPUnit
+run-name: Reduced lint and tests
 
 on:
   push:
