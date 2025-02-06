@@ -19,6 +19,8 @@ jobs:
         with:
           path: "."
           file-endings: ".xml"
+      # https://emmer.dev/blog/linting-markdown-files-with-markdownlint/
+      - run: docker run --volume "$PWD:/workdir" ghcr.io/igorshubovych/markdownlint-cli:latest "**/*.md"
       - run: "composer validate --strict"
 
   phpunit:
