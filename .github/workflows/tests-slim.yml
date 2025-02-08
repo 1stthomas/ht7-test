@@ -23,6 +23,8 @@ jobs:
           file-endings: ".xml"
       - name: Markdown Lint
         run: docker run --volume "$PWD:/workdir" ghcr.io/igorshubovych/markdownlint-cli:latest "**/*.md"
+      - name: PHP syntax check
+        run: find . -name '*.php' -exec php -l {} \;
       - name: PHP Composer Lint
         run: "composer validate --strict"
 
