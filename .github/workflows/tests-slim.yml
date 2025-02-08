@@ -1,58 +1,89 @@
-name: "PHPUnit"
+name: PHPUnit
+run-name: Reduced lint and tests
 
 on:
   push:
     branches-ignore: [ master, develop ]
 
 jobs:
+  Action-Linting:
+    name: Lint Basics
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: GitHub Action Lint
+        uses: devops-actions/actionlint@v0.1.2
+      - name: XML Lint
+        uses: action-pack/valid-xml@v1
+        with:
+          path: "."
+          file-endings: ".xml"
+      - name: Markdown Lint
+        run: docker run --volume "$PWD:/workdir" ghcr.io/igorshubovych/markdownlint-cli:latest "**/*.md"
+      - name: PHP syntax check
+        run: find . -name '*.php' -exec php -l {} \;
+      - name: PHP Composer Lint
+        run: "composer validate --strict"
+
   phpunit:
-    name: "PHPUnit"
+    name: PHPUnit
     env:
       CODE_COVERAGE: none
       LC_ALL: en_US.UTF-8
       PHP_EXTENSIONS: mbstring, xml, ctype, iconv
       PHP_TOOLS: "composer:v2"
       PHP_VERSION: "8.4"
+    needs: [Action-Linting]
     runs-on: "ubuntu-22.04"
 
     steps:
-      - name: "Checkout ${{ github.repository }}"
+      - name: Checkout ${{ github.repository }}
         uses: "actions/checkout@v4"
 
-      - name: "Validate composer.json and composer.lock"
-        run: "composer validate --strict"
-
-      - name: "Install PHP"
+      - name: Setup PHP ${{ env.PHP_VERSION }}
         uses: shivammathur/setup-php@v2
         with:
-          coverage: ${{ env.CODE_COVERAGE }}
           extensions: ${{ env.PHP_EXTENSIONS }}
           php-version: ${{ env.PHP_VERSION }}
-          tools: ${{ env.PHP_TOOLS }}
+          tools: composer:v2
 
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: |
-          "echo 'dir=$(composer config cache-files-dir)' >> $GITHUB_OUTPUT"
-
-      - uses: actions/cache@v4
+      - name: Validate PHP composer config
+        run: "composer validate --strict"
+          
+      - name: Restore cached dependencies
+        id: restore-cache
+        uses: actions/cache/restore@v4
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
+          key: ${{ runner.os }}-${{ env.PHP_VERSION }}-composer-${{ hashFiles('**/composer.lock') }}
+          path: |
+            ./vendor
 
-      - name: "Install locked dependencies"
-        if: steps.composer-cache.outputs.cache-hit != 'true'
-        run: |
-          "composer install --no-interaction --no-progress --no-suggest"
+      - name: Install dependencies
+        # if: steps.restore-cache.outputs.cache-hit != 'true'
+        run: composer install --no-interaction --no-progress
 
-      - name: "Perform unit tests"
-        run: |
-          "./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit phpunit-report.xml --testsuite Unit"
-
-      - name: Test Summary
-        if: env.CODE_COVERAGE != 'none'
-        uses: test-summary/action@v2
+      - name: Cache Composer dependencies
+        id: cache-composer-dependencies
+        if: always() && steps.restore-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
         with:
-          paths: phpunit-report*.xml
+          key: ${{ steps.restore-cache.outputs.cache-primary-key }}
+          path: ./vendor
+
+      - name: Perform unit tests
+        run: |
+          ./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit phpunit-report.xml --testsuite Unit
+  
+      # - name: Run unit test
+      #   uses: php-actions/phpunit@v3
+      #   with:
+      #     args: "--log-junit phpunit-report.xml"
+      #     configuration: phpunit.xml
+      #     php_extensions: ${{ env.PHP_EXTENSIONS }}
+      #     php_version: ${{ env.PHP_VERSION }}
+      #     memory_limit: 1G
+      #     testsuite: unit
+      #     version: latest

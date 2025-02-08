@@ -4,7 +4,7 @@ on:
   pull_request:
     branches:
       - master
-    types: [labeled]
+    types: [labeled, synchronize]
 
 jobs:
   check:
@@ -13,6 +13,8 @@ jobs:
     runs-on: "ubuntu-22.04"
 
     steps:
+      - name: "Checkout ${{ github.repository }}"
+        uses: "actions/checkout@v4"
       - name: "Exit all non 'actions:release' labeled PRs"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -22,6 +24,7 @@ jobs:
 
   phpunit:
     name: "PHPUnit"
+    needs: [check]
     env:
       CODE_COVERAGE: none
       LC_ALL: en_US.UTF-8
@@ -93,6 +96,7 @@ jobs:
 
   build:
     name: Generate Version Badge
+    needs: [phpunit]
     runs-on: ubuntu-22.04
     steps:
     - name: Setup

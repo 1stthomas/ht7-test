@@ -99,16 +99,16 @@ jobs:
       - name: Enable code coverage and test reporting
         if: matrix.php-version == '8.4' && startsWith(matrix.operating-system, 'ubuntu') && matrix.dependencies == 'locked'
         run: printf 'CODE_COVERAGE=pcov\n' >> "$GITHUB_ENV"
-      - name: "Checkout"
+      - name: Checkout
         uses: "actions/checkout@v4"
-      - name: "Install PHP"
+      - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
           extensions: ${{ env.PHP_EXTENSIONS }}
           coverage: ${{ env.CODE_COVERAGE }}
           tools: ${{ matrix.composer }}
-      - name: "Validate composer.json and composer.lock"
+      - name: Validate PHP composer config
         run: "composer validate --strict"
       - name: "Install dependencies"
         run: |
@@ -116,7 +116,7 @@ jobs:
       - name: "Perform unit tests"
         if: env.CODE_COVERAGE == 'none'
         run: composer test-unit
-      - name: "Perform unit tests with test report"
+      - name: Perform unit tests with test report
         if: env.CODE_COVERAGE != 'none'
         run: ./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit ./.artifacts/phpunit-report.xml
       - name: Upload artifact
