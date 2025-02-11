@@ -6,7 +6,7 @@ on:
     branches-ignore: [ master, develop ]
 
 jobs:
-  Action-Linting:
+  Lint-Basics:
     name: Lint Basics
     runs-on: ubuntu-22.04
     permissions:
@@ -36,7 +36,7 @@ jobs:
       PHP_EXTENSIONS: mbstring, xml, ctype, iconv
       PHP_TOOLS: "composer:v2"
       PHP_VERSION: "8.4"
-    needs: [Action-Linting]
+    needs: [Lint-Basics]
     runs-on: "ubuntu-22.04"
 
     steps:
