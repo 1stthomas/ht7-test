@@ -49,9 +49,6 @@ jobs:
           extensions: ${{ env.PHP_EXTENSIONS }}
           php-version: ${{ env.PHP_VERSION }}
           tools: composer:v2
-
-      # - name: Validate PHP composer config
-      #   run: "composer validate --strict"
           
       - name: Restore cached dependencies
         id: restore-cache
