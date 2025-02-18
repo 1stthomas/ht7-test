@@ -38,7 +38,6 @@ jobs:
       PHP_VERSION: "8.4"
     needs: [Lint-Basics]
     runs-on: "ubuntu-22.04"
-
     steps:
       - name: Checkout ${{ github.repository }}
         uses: "actions/checkout@v4"
@@ -84,3 +83,11 @@ jobs:
       #     memory_limit: 1G
       #     testsuite: unit
       #     version: latest
+
+  Security:
+    name: Security
+    needs: [phpunit]
+    runs-on: "ubuntu-22.04"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: symfonycorp/security-checker-action@v5
