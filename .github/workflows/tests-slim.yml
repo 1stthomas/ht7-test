@@ -73,17 +73,6 @@ jobs:
         run: |
           ./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit phpunit-report.xml --testsuite Unit
   
-      # - name: Run unit test
-      #   uses: php-actions/phpunit@v3
-      #   with:
-      #     args: "--log-junit phpunit-report.xml"
-      #     configuration: phpunit.xml
-      #     php_extensions: ${{ env.PHP_EXTENSIONS }}
-      #     php_version: ${{ env.PHP_VERSION }}
-      #     memory_limit: 1G
-      #     testsuite: unit
-      #     version: latest
-
   Security:
     name: Security
     needs: [phpunit]
