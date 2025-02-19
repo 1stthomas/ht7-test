@@ -28,6 +28,39 @@ jobs:
       - name: PHP Composer Lint
         run: "composer validate --strict"
 
+  PHPStan:
+    name: PHPStan
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v4
+    - uses: php-actions/composer@v6
+    - uses: php-actions/phpstan@v3
+      with:
+        level: max
+        path: src/ tests/
+        php_version: 8.4
+
+  PHP-CS-Fixer:
+    name: PHP-CS-Fixer
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v45
+      - name: Get extra arguments for PHP-CS-Fixer
+        id: phpcs-intersection
+        run: |
+          CHANGED_FILES=$(echo "${{ steps.changed-files.outputs.all_changed_files }}" | tr ' ' '\n')
+          if ! echo "${CHANGED_FILES}" | grep -qE "^(\\.php-cs-fixer(\\.dist)?\\.php|composer\\.lock)$"; then EXTRA_ARGS=$(printf -- '--path-mode=intersection\n--\n%s' "${CHANGED_FILES}"); else EXTRA_ARGS=''; fi
+          echo "PHPCS_EXTRA_ARGS<<EOF" >> $GITHUB_ENV
+          echo "$EXTRA_ARGS" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+      - name: PHP-CS-Fixer
+        uses: docker://oskarstark/php-cs-fixer-ga
+        with:
+          args: --config=.php-cs-fixer.dist.php -v --dry-run --stop-on-violation --using-cache=no
+
   phpunit:
     name: PHPUnit
     env:
@@ -48,7 +81,6 @@ jobs:
           extensions: ${{ env.PHP_EXTENSIONS }}
           php-version: ${{ env.PHP_VERSION }}
           tools: composer:v2
-          
       - name: Restore cached dependencies
         id: restore-cache
         uses: actions/cache/restore@v4
@@ -56,11 +88,9 @@ jobs:
           key: ${{ runner.os }}-${{ env.PHP_VERSION }}-composer-${{ hashFiles('**/composer.lock') }}
           path: |
             ./vendor
-
       - name: Install dependencies
         # if: steps.restore-cache.outputs.cache-hit != 'true'
         run: composer install --no-interaction --no-progress
-
       - name: Cache Composer dependencies
         id: cache-composer-dependencies
         if: always() && steps.restore-cache.outputs.cache-hit != 'true'
@@ -68,11 +98,11 @@ jobs:
         with:
           key: ${{ steps.restore-cache.outputs.cache-primary-key }}
           path: ./vendor
-
       - name: Perform unit tests
         run: |
           ./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit phpunit-report.xml --testsuite Unit
   
+  # To be moved into full test work flow
   Security:
     name: Security
     needs: [phpunit]
