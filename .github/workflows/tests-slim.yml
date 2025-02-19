@@ -53,9 +53,11 @@ jobs:
         run: |
           CHANGED_FILES=$(echo "${{ steps.changed-files.outputs.all_changed_files }}" | tr ' ' '\n')
           if ! echo "${CHANGED_FILES}" | grep -qE "^(\\.php-cs-fixer(\\.dist)?\\.php|composer\\.lock)$"; then EXTRA_ARGS=$(printf -- '--path-mode=intersection\n--\n%s' "${CHANGED_FILES}"); else EXTRA_ARGS=''; fi
-          { echo "PHPCS_EXTRA_ARGS<<EOF" } >> $GITHUB_ENV
-          { echo "$EXTRA_ARGS" } >> $GITHUB_ENV
-          { echo "EOF" } >> $GITHUB_ENV
+          {
+            echo "PHPCS_EXTRA_ARGS<<EOF"
+            echo "$EXTRA_ARGS"
+            echo "EOF"
+          } >> $GITHUB_ENV
       - name: PHP-CS-Fixer
         uses: docker://oskarstark/php-cs-fixer-ga
         with:
