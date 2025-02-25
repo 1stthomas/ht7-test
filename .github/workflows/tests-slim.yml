@@ -51,7 +51,7 @@ jobs:
       - name: Get extra arguments for PHP-CS-Fixer
         id: phpcs-intersection
         run: |
-          CHANGED_FILES=$(echo "${{ steps.changed-files.outputs.all_changed_files }}" | tr ' ' '\n')
+          CHANGED_FILES="$(echo \"${{ steps.changed-files.outputs.all_changed_files }}\" | tr ' ' '\n')"
       # - name: PHP-CS-Fixer
       #   uses: docker://oskarstark/php-cs-fixer-ga
       #   with:
