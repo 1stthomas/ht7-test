@@ -52,7 +52,7 @@ jobs:
         id: phpcs-intersection
         run: |
           "CHANGED_FILES=$(echo '${{ steps.changed-files.outputs.all_changed_files }}' | tr ' ' '\n')"
-          if ! "echo '${CHANGED_FILES}'' | grep -qE '^(\\.php-cs-fixer(\\.dist)?\\.php|composer\\.lock)$'"; then "EXTRA_ARGS=$(printf -- '--path-mode=intersection\n--\n%s' '${CHANGED_FILES}')"; else "EXTRA_ARGS=''"; fi
+          if ! "echo '${CHANGED_FILES}' | grep -qE '^(\\.php-cs-fixer(\\.dist)?\\.php|composer\\.lock)$'"; then "EXTRA_ARGS=$(printf -- '--path-mode=intersection\n--\n%s' '${CHANGED_FILES}')"; else "EXTRA_ARGS=''"; fi
       - name: PHP-CS-Fixer
         uses: docker://oskarstark/php-cs-fixer-ga
         with:
