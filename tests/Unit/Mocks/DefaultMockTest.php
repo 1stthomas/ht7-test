@@ -56,7 +56,7 @@ final class DefaultMockTest extends TestCase
             ->method('getTest1')
             ->with($msg)
             ->willReturn($expected);
-        
+
         /** @var MockObject&TestHelperWithoutConstruct $mock */
         $this->assertSame($expected, $mock->getTest1($msg));
     }
