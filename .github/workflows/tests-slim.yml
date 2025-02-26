@@ -30,6 +30,7 @@ jobs:
 
   PHPStan:
     name: PHPStan
+    needs: [Lint-Basics]
     runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v4
@@ -42,6 +43,7 @@ jobs:
 
   PHP-CS-Fixer:
     name: PHP-CS-Fixer
+    needs: [Lint-Basics]
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
@@ -71,7 +73,7 @@ jobs:
       PHP_EXTENSIONS: mbstring, xml, ctype, iconv
       PHP_TOOLS: "composer:v2"
       PHP_VERSION: "8.4"
-    needs: [Lint-Basics]
+    needs: [PHPStan, PHP-CS-Fixer]
     runs-on: "ubuntu-22.04"
     steps:
       - name: Checkout ${{ github.repository }}
