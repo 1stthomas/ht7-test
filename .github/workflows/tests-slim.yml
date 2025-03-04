@@ -118,27 +118,33 @@ jobs:
         with:
           node-version: 'latest'
       - name: Transform test report to CTRF
+        if: always()
         run: npx junit-to-ctrf .artifacts/phpunit-report.xml -o .artifacts/phpunit-report.ctrf.json
       - name: Generate test summary
+        if: always()
         run: npx github-actions-ctrf summary .artifacts/phpunit-report.ctrf.json
       - name: Get errors count
         id: errors-count
+        if: always()
         run: |
           ERROR_COUNT="$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=errors=\").*(?=\" fail)')"
           echo "ERROR_COUNT=\"$ERROR_COUNT\"" >> "$GITHUB_ENV"
       - name: Generate failed test summary if necessary
+        if: always()
         run: |
           FAILURE_COUNT="$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=failures=\").*(?=\" skipped)')"
           if [ "$FAILURE_COUNT" -ne "0" ]; then
             npx github-actions-ctrf failed .artifacts/phpunit-report.ctrf.json
           fi
       - name: Generate skipped test summary if necessary
+        if: always()
         run: |
           SKIPPED_COUNT="$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=skipped=\").*(?=\" time)')"
           if [ "$SKIPPED_COUNT" -ne "0" ]; then
             npx github-actions-ctrf skipped .artifacts/phpunit-report.ctrf.json
           fi
       - name: Generate tests list
+        if: always()
         run: npx github-actions-ctrf tests .artifacts/phpunit-report.ctrf.json --exit-on-fail
 
   # test-report:
