@@ -113,6 +113,7 @@ jobs:
       #     path: .artifacts/phpunit-report.xml
       #     retention-days: 1
       - name: Setup node.js
+        if: always()
         uses: actions/setup-node@v4
         with:
           node-version: 'latest'
