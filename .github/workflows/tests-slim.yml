@@ -104,7 +104,63 @@ jobs:
           path: ./vendor
       - name: Perform unit tests
         run: |
-          ./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit phpunit-report.xml --testsuite Unit
+          ./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit ./.artifacts/phpunit-report.xml --testsuite Unit
+      - name: Upload artifact
+        if: always() && env.CODE_COVERAGE == 'none'
+        uses: actions/upload-artifact@v4
+        with:
+          name: phpunit-report
+          path: .artifacts/phpunit-report.xml
+          retention-days: 1
+
+  test-report:
+    env:
+      ERROR_COUNT: 0
+      FAILURE_COUNT: 0
+      GH_TOKEN: ${{ github.token }}
+      SKIPPED_COUNT: 0
+    name: "Generate test report"
+    needs: [phpunit]
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'latest'
+          # cache-dependency-path: ''
+      - name: Retriev PHPUnit test report
+        uses: actions/download-artifact@v4
+        with:
+          name: phpunit-report
+          path: .artifacts/
+      - name: Remove artifact
+        uses: geekyeggo/delete-artifact@v5
+        with:
+          name: phpunit-report
+      - name: Transform test report to CTRF
+        run: npx junit-to-ctrf .artifacts/phpunit-report.xml -o .artifacts/phpunit-report.ctrf.json
+      - name: Generate test summary
+        run: npx github-actions-ctrf summary .artifacts/phpunit-report.ctrf.json
+      - name: Get errors count
+        id: errors-count
+        run: |
+          ERROR_COUNT="$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=errors=\").*(?=\" fail)')"
+          echo "ERROR_COUNT=\"$ERROR_COUNT\"" >> "$GITHUB_ENV"
+      - name: Generate failed test summary if necessary
+        run: |
+          FAILURE_COUNT="$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=failures=\").*(?=\" skipped)')"
+          if [ "$FAILURE_COUNT" -ne "0" ]; then
+            npx github-actions-ctrf failed .artifacts/phpunit-report.ctrf.json
+          fi
+      - name: Generate skipped test summary if necessary
+        run: |
+          SKIPPED_COUNT="$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=skipped=\").*(?=\" time)')"
+          if [ "$SKIPPED_COUNT" -ne "0" ]; then
+            npx github-actions-ctrf skipped .artifacts/phpunit-report.ctrf.json
+          fi
+      - name: Generate tests list
+        run: npx github-actions-ctrf tests .artifacts/phpunit-report.ctrf.json --exit-on-fail
   
   # To be moved into full test work flow
   Security:
