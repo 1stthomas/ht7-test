@@ -21,6 +21,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(DefaultMock::class)]
 final class DefaultMockTest extends TestCase
 {
+    
     /** @psalm-var class-string<object> */
     private string $className = DefaultMock::class;
 
