@@ -32,7 +32,7 @@ final class DefaultMockTest extends TestCase
         $expected = 'from test1';
         $sut = new DefaultMock($this, TestHelperWithConstruct::class);
         $mock = $sut->create(['getTest1'], ['test' => 'Initial test text']);
-        $mock->expects($this->exactly(3))
+        $mock->expects($this->exactly(1))
             ->method('getTest1')
             ->with($msg)
             ->willReturn($expected);
