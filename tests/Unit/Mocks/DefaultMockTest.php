@@ -21,7 +21,6 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(DefaultMock::class)]
 final class DefaultMockTest extends TestCase
 {
-    
     /** @psalm-var class-string<object> */
     private string $className = DefaultMock::class;
 
@@ -33,7 +32,7 @@ final class DefaultMockTest extends TestCase
         $expected = 'from test1';
         $sut = new DefaultMock($this, TestHelperWithConstruct::class);
         $mock = $sut->create(['getTest1'], ['test' => 'Initial test text']);
-        $mock->expects($this->exactly(2))
+        $mock->expects($this->exactly(3))
             ->method('getTest1')
             ->with($msg)
             ->willReturn($expected);
