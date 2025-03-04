@@ -119,7 +119,7 @@ jobs:
       FAILURE_COUNT: 0
       GH_TOKEN: ${{ github.token }}
       SKIPPED_COUNT: 0
-    if: !cancelled()
+    if: success() || failure()
     name: "Generate test report"
     needs: [phpunit]
     runs-on: ubuntu-22.04
