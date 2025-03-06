@@ -3,14 +3,14 @@ run-name: Release workflow
 
 on:
   pull_request:
+    types: [closed, labeled]
     branches:
       - master
-    types: [labeled, synchronize]
 
 jobs:
   check:
     name: "Check PR"
-    if: ${{ github.event.label.name != 'actions:release' }}
+    if: ${{ github.event.pull_request.merged == true && github.event.label.name != 'actions:release' }}
     runs-on: "ubuntu-22.04"
 
     steps:
