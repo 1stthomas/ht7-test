@@ -13,7 +13,8 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      - uses: actions/checkout@v4
+      - name: "Checkout ${{ github.repository }}"
+        uses: actions/checkout@v4
       - name: GitHub Action Lint
         uses: devops-actions/actionlint@v0.1.2
       - name: XML Lint
@@ -33,9 +34,11 @@ jobs:
     needs: [Lint-Basics]
     runs-on: ubuntu-22.04
     steps:
-    - uses: actions/checkout@v4
+    - name: "Checkout ${{ github.repository }}"
+      uses: actions/checkout@v4
     - uses: php-actions/composer@v6
-    - uses: php-actions/phpstan@v3
+    - name: Run PHPStan
+      uses: php-actions/phpstan@v3
       with:
         level: max
         path: src/ tests/
@@ -46,7 +49,8 @@ jobs:
     needs: [Lint-Basics]
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - name: "Checkout ${{ github.repository }}"
+        uses: actions/checkout@v4
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v45
@@ -60,7 +64,7 @@ jobs:
             echo "$EXTRA_ARGS"
             echo "EOF"
           } >> "$GITHUB_ENV"
-      - name: PHP-CS-Fixer
+      - name: Run PHP-CS-Fixer
         uses: docker://oskarstark/php-cs-fixer-ga
         with:
           args: --config=.php-cs-fixer.dist.php -v --dry-run --stop-on-violation --using-cache=no
