@@ -1,18 +1,21 @@
 name: Release
+run-name: Release workflow
 
 on:
   pull_request:
+    types: [closed, labeled]
     branches:
       - master
-    types: [labeled]
 
 jobs:
   check:
     name: "Check PR"
-    if: ${{ github.event.label.name != 'actions:release' }}
+    if: ${{ github.event.pull_request.merged == true && github.event.label.name != 'actions:release' }}
     runs-on: "ubuntu-22.04"
 
     steps:
+      - name: "Checkout ${{ github.repository }}"
+        uses: "actions/checkout@v4"
       - name: "Exit all non 'actions:release' labeled PRs"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -22,6 +25,7 @@ jobs:
 
   phpunit:
     name: "PHPUnit"
+    needs: [check]
     env:
       CODE_COVERAGE: none
       LC_ALL: en_US.UTF-8
@@ -93,6 +97,7 @@ jobs:
 
   build:
     name: Generate Version Badge
+    needs: [phpunit]
     runs-on: ubuntu-22.04
     steps:
     - name: Setup

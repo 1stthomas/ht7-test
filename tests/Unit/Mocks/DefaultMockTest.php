@@ -32,7 +32,7 @@ final class DefaultMockTest extends TestCase
         $expected = 'from test1';
         $sut = new DefaultMock($this, TestHelperWithConstruct::class);
         $mock = $sut->create(['getTest1'], ['test' => 'Initial test text']);
-        $mock->expects($this->once())
+        $mock->expects($this->exactly(1))
             ->method('getTest1')
             ->with($msg)
             ->willReturn($expected);
@@ -56,7 +56,7 @@ final class DefaultMockTest extends TestCase
             ->method('getTest1')
             ->with($msg)
             ->willReturn($expected);
-        
+
         /** @var MockObject&TestHelperWithoutConstruct $mock */
         $this->assertSame($expected, $mock->getTest1($msg));
     }

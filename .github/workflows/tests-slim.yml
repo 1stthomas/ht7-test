@@ -1,58 +1,159 @@
-name: "PHPUnit"
+name: PHPUnit
+run-name: Reduced lint and tests
 
 on:
   push:
     branches-ignore: [ master, develop ]
 
 jobs:
+  Lint-Basics:
+    name: Lint Basics
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: "Checkout ${{ github.repository }}"
+        uses: actions/checkout@v4
+      - name: GitHub Action Lint
+        uses: devops-actions/actionlint@v0.1.2
+      - name: XML Lint
+        uses: action-pack/valid-xml@v1
+        with:
+          path: "."
+          file-endings: ".xml"
+      - name: Markdown Lint
+        run: docker run --volume "$PWD:/workdir" ghcr.io/igorshubovych/markdownlint-cli:latest "**/*.md"
+      - name: PHP syntax check
+        run: find . -name '*.php' -exec php -l {} \;
+      - name: PHP Composer Lint
+        run: "composer validate --strict"
+
+  PHPStan:
+    name: PHPStan
+    needs: [Lint-Basics]
+    runs-on: ubuntu-22.04
+    steps:
+    - name: "Checkout ${{ github.repository }}"
+      uses: actions/checkout@v4
+    - uses: php-actions/composer@v6
+    - name: Run PHPStan
+      uses: php-actions/phpstan@v3
+      with:
+        level: max
+        path: src/ tests/
+        php_version: 8.4
+
+  PHP-CS-Fixer:
+    name: PHP-CS-Fixer
+    needs: [Lint-Basics]
+    runs-on: ubuntu-22.04
+    steps:
+      - name: "Checkout ${{ github.repository }}"
+        uses: actions/checkout@v4
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v45
+      - name: Get extra arguments for PHP-CS-Fixer
+        id: phpcs-intersection
+        run: |
+          CHANGED_FILES=$(echo "${{ steps.changed-files.outputs.all_changed_files }}" | tr ' ' '\n')
+          if ! echo "${CHANGED_FILES}" | grep -qE '^(\\.php-cs-fixer(\\.dist)?\\.php|composer\\.lock)$'; then EXTRA_ARGS=$(printf -- '--path-mode=intersection\n--\n%s' "${CHANGED_FILES}"); else EXTRA_ARGS=''; fi
+          {
+            echo "PHPCS_EXTRA_ARGS<<EOF"
+            echo "$EXTRA_ARGS"
+            echo "EOF"
+          } >> "$GITHUB_ENV"
+      - name: Run PHP-CS-Fixer
+        uses: docker://oskarstark/php-cs-fixer-ga
+        with:
+          args: --config=.php-cs-fixer.dist.php -v --dry-run --stop-on-violation --using-cache=no
+
   phpunit:
-    name: "PHPUnit"
+    name: PHPUnit
     env:
       CODE_COVERAGE: none
       LC_ALL: en_US.UTF-8
       PHP_EXTENSIONS: mbstring, xml, ctype, iconv
       PHP_TOOLS: "composer:v2"
       PHP_VERSION: "8.4"
+    needs: [PHPStan, PHP-CS-Fixer]
     runs-on: "ubuntu-22.04"
-
     steps:
-      - name: "Checkout ${{ github.repository }}"
+      - name: Checkout ${{ github.repository }}
         uses: "actions/checkout@v4"
 
-      - name: "Validate composer.json and composer.lock"
-        run: "composer validate --strict"
-
-      - name: "Install PHP"
+      - name: Setup PHP ${{ env.PHP_VERSION }}
         uses: shivammathur/setup-php@v2
         with:
-          coverage: ${{ env.CODE_COVERAGE }}
           extensions: ${{ env.PHP_EXTENSIONS }}
           php-version: ${{ env.PHP_VERSION }}
-          tools: ${{ env.PHP_TOOLS }}
-
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: |
-          "echo 'dir=$(composer config cache-files-dir)' >> $GITHUB_OUTPUT"
-
-      - uses: actions/cache@v4
+          tools: composer:v2
+      - name: Restore cached dependencies
+        id: restore-cache
+        uses: actions/cache/restore@v4
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
-
-      - name: "Install locked dependencies"
-        if: steps.composer-cache.outputs.cache-hit != 'true'
-        run: |
-          "composer install --no-interaction --no-progress --no-suggest"
-
-      - name: "Perform unit tests"
-        run: |
-          "./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit phpunit-report.xml --testsuite Unit"
-
-      - name: Test Summary
-        if: env.CODE_COVERAGE != 'none'
-        uses: test-summary/action@v2
+          key: ${{ runner.os }}-${{ env.PHP_VERSION }}-composer-${{ hashFiles('**/composer.lock') }}
+          path: |
+            ./vendor
+      - name: Install dependencies
+        # if: steps.restore-cache.outputs.cache-hit != 'true'
+        run: composer install --no-interaction --no-progress
+      - name: Cache Composer dependencies
+        id: cache-composer-dependencies
+        if: always() && steps.restore-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
         with:
-          paths: phpunit-report*.xml
+          key: ${{ steps.restore-cache.outputs.cache-primary-key }}
+          path: ./vendor
+      - name: Perform unit tests
+        run: |
+          ./vendor/bin/phpunit --configuration ./phpunit.xml --log-junit ./.artifacts/phpunit-report.xml --testsuite Unit
+      - name: Setup node.js
+        if: always()
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'latest'
+      - name: Transform test report to CTRF
+        if: always()
+        run: npx junit-to-ctrf .artifacts/phpunit-report.xml -o .artifacts/phpunit-report.ctrf.json
+      - name: Generate test summary
+        if: always()
+        run: npx github-actions-ctrf summary .artifacts/phpunit-report.ctrf.json
+      - name: Get errors count
+        id: errors-count
+        if: always()
+        run: |
+          ERROR_COUNT="$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=errors=\").*(?=\" fail)')"
+          echo "ERROR_COUNT=\"$ERROR_COUNT\"" >> "$GITHUB_ENV"
+      - name: Generate failed test summary if necessary
+        if: always()
+        run: |
+          FAILURE_COUNT="$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=failures=\").*(?=\" skipped)')"
+          if [ "$FAILURE_COUNT" -ne "0" ]; then
+            npx github-actions-ctrf failed .artifacts/phpunit-report.ctrf.json
+          fi
+      - name: Generate skipped test summary if necessary
+        if: always()
+        run: |
+          SKIPPED_COUNT="$(grep -E 'name=\"/home/' .artifacts/phpunit-report.xml | grep -o -P '(?<=skipped=\").*(?=\" time)')"
+          if [ "$SKIPPED_COUNT" -ne "0" ]; then
+            npx github-actions-ctrf skipped .artifacts/phpunit-report.ctrf.json
+          fi
+      - name: Generate tests list
+        if: always()
+        run: npx github-actions-ctrf tests .artifacts/phpunit-report.ctrf.json --exit-on-fail
+
+  # To be moved into full test work flow
+  Security:
+    name: Security
+    needs: [phpunit]
+    runs-on: "ubuntu-22.04"
+    steps:
+      - uses: actions/checkout@v4
+      # - uses: actions/cache@v4
+      #   id: cache-db
+      #   with:
+      #       path: ~/.symfony/cache
+      #       key: db
+      - uses: symfonycorp/security-checker-action@v5
