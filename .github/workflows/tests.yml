@@ -6,18 +6,21 @@ concurrency:
   cancel-in-progress: true
 on:
   push:
-    branches: 
-      - master
-      - develop
-    paths:
-      - '**'
-      - '!.build/**'
-  pull_request:
-    branches: 
-      - master
-      - develop
-    types:
-      - opened
+    branches-ignore: [ master, develop ]
+# on:
+#   push:
+#     branches: 
+#       - master
+#       - develop
+#     paths:
+#       - '**'
+#       - '!.build/**'
+#   pull_request:
+#     branches: 
+#       - master
+#       - develop
+#     types:
+#       - opened
 
 jobs:
   Action-Linting:

@@ -3,7 +3,8 @@ run-name: Reduced lint and tests
 
 on:
   push:
-    branches-ignore: [ master, develop ]
+    branches: [ master, develop ]
+    # branches-ignore: [ master, develop ]
 
 jobs:
   Lint-Basics:
