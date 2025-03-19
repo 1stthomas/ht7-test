@@ -24,7 +24,7 @@ on:
 
 jobs:
   Action-Linting:
-    uses: 1stthomas/ht7-github-actions/.github/workflows/lint-basics.yml@main
+    uses: 1stthomas/ht7-github-actions/.github/workflows/lint-basics.yml@master
     with:
       xml_path: "./src"
       xml_file_endings: ".xml"
