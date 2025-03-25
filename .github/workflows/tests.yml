@@ -48,16 +48,15 @@ jobs:
       CODE_COVERAGE: none
       LC_ALL: en_US.UTF-8
       PHP_EXTENSIONS: mbstring, xml, ctype, iconv
-    # needs: [PHPStan, PHP-CS-Fixer]
     needs: [PHPStan, PHP-CS-Fixer]
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
         php-version:
-          # - "8.2"
-          # - "8.3"
+          - "8.2"
+          - "8.3"
           - "8.4"
-          # - "8.5"
+          - "8.5"
         dependencies:
           - "locked"
         operating-system:
@@ -66,35 +65,33 @@ jobs:
           - "composer:v2"
         composer-command:
           - "composer install --no-interaction --no-progress --no-suggest"
-        # include:
-        #   - composer-command: "composer update --prefer-lowest --no-interaction --no-progress --no-suggest"
-        #     dependencies: "lowest"
-        #     operating-system: "ubuntu-22.04"
-        #     php-version: 8.4
-        #   - composer-command: "composer update --no-interaction --no-progress --no-suggest"
-        #     dependencies: "highest"
-        #     operating-system: "ubuntu-22.04"
-        #     php-version: 8.4
+        include:
+          - composer-command: "composer update --prefer-lowest --no-interaction --no-progress --no-suggest"
+            dependencies: "lowest"
+            operating-system: "ubuntu-22.04"
+            php-version: 8.4
+          - composer-command: "composer update --no-interaction --no-progress --no-suggest"
+            dependencies: "highest"
+            operating-system: "ubuntu-22.04"
+            php-version: 8.4
 
     steps:
       - name: Enable code coverage and test reporting
         if: matrix.php-version == '8.4' && startsWith(matrix.operating-system, 'ubuntu') && matrix.dependencies == 'locked'
         run: printf 'CODE_COVERAGE=pcov\n' >> "$GITHUB_ENV"
-      - name: Checkout
-        uses: "actions/checkout@v4"
-      - name: Install PHP
+      - name: "Checkout ${{ github.repository }}"
+        uses: actions/checkout@v4
+      - name: "Install PHP ${{ matrix.php-version }}"
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
           extensions: ${{ env.PHP_EXTENSIONS }}
           coverage: ${{ env.CODE_COVERAGE }}
           tools: ${{ matrix.composer }}
-      - name: Validate PHP composer config
-        run: "composer validate --strict"
-      - name: "Install dependencies"
+      - name: Install dependencies
         run: |
           ${{ matrix.composer-command }}
-      - name: "Perform unit tests"
+      - name: Perform unit tests"
         if: env.CODE_COVERAGE == 'none'
         run: composer test-unit
       - name: Perform unit tests with test report
