@@ -30,23 +30,12 @@ jobs:
       xml_file_endings: ".xml"
 
   PHPStan:
+    needs: [Action-Linting]
     uses: 1stthomas/ht7-github-actions/.github/workflows/phpstan.yml@master
     with:
       level: "max"
       path: "src/ tests/"
       php_version: "8.4"
-
-  # PHPStan:
-  #   # name: PHPStan
-  #   runs-on: ubuntu-22.04
-  #   steps:
-  #   - uses: actions/checkout@v4
-  #   - uses: php-actions/composer@v6
-  #   - uses: php-actions/phpstan@v3
-  #     with:
-  #       level: max
-  #       path: src/ tests/
-  #       php_version: 8.4
 
   PHP-CS-Fixer:
     needs: [Action-Linting]
