@@ -49,7 +49,7 @@ jobs:
       LC_ALL: en_US.UTF-8
       PHP_EXTENSIONS: mbstring, xml, ctype, iconv
     # needs: [PHPStan, PHP-CS-Fixer]
-    needs: [Action-Linting]
+    needs: [PHPStan, PHP-CS-Fixer]
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
