@@ -184,5 +184,5 @@ jobs:
   #       run: npx github-actions-ctrf tests .artifacts/phpunit-report.ctrf.json --exit-on-fail
 
   Security-Composer:
-    needs: [test-report]
+    needs: [PHPUnit]
     uses: 1stthomas/ht7-github-actions/.github/workflows/security-composer.yml@master
