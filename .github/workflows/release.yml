@@ -1,6 +1,9 @@
 name: Release
 run-name: Release workflow
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 on:
   pull_request:
     types: [closed, labeled]
