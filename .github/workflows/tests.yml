@@ -35,7 +35,7 @@ jobs:
     with:
       level: "max"
       path: "src/ tests/"
-      php_version: 8.4
+      php_version: "latest"
 
   PHP-CS-Fixer:
     needs: [Action-Linting]
