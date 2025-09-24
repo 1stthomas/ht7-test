@@ -19,10 +19,10 @@ class DefaultMock
     public function __construct(private TestCase $testCase, private string $className) {}
 
     /**
-     * @psalm-param list<non-empty-string> $methods
-     *
      * @param array<int, string>   $methods         the methods to mock
      * @param array<string, mixed> $constructorArgs the arguments for the constructor
+     *
+     * @psalm-param list<non-empty-string> $methods
      */
     public function create(array $methods = [], ?array $constructorArgs = null): MockObject
     {

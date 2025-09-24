@@ -51,6 +51,24 @@ final class ReflectionHelperTest extends TestCase
         $this->assertSame($reflectedConstructor, $constructor, 'constructor reflection method created.');
     }
 
+    /**
+     * @return array<string, mixed>
+     */
+    public static function getConstructorProvider(): array
+    {
+        return [
+            'accessable constructor' => [
+                'isAccessable' => true,
+            ],
+            'inaccessable constructor' => [
+                'isAccessable' => false,
+            ],
+            'default constructor' => [
+                'isAccessable' => null,
+            ],
+        ];
+    }
+
     #[Test]
     #[TestDox('Get a reflection method instance')]
     #[DataProvider('getMethodProvider')]
@@ -65,6 +83,24 @@ final class ReflectionHelperTest extends TestCase
         $method = $sut->getMethod('testmethod', $isAccessable);
 
         $this->assertSame($reflectedMethod, $method, 'reflection method created.');
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public static function getMethodProvider(): array
+    {
+        return [
+            'accessable method' => [
+                'isAccessable' => true,
+            ],
+            'inaccessable method' => [
+                'isAccessable' => false,
+            ],
+            'default method' => [
+                'isAccessable' => null,
+            ],
+        ];
     }
 
     #[Test]
@@ -85,42 +121,6 @@ final class ReflectionHelperTest extends TestCase
         $property = $sut->getProperty('testprop', $isAccessable);
 
         $this->assertSame($reflectedProperty, $property, 'reflection property created.');
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public static function getConstructorProvider(): array
-    {
-        return [
-            'accessable constructor' => [
-                'isAccessable' => true,
-            ],
-            'inaccessable constructor' => [
-                'isAccessable' => false,
-            ],
-            'default constructor' => [
-                'isAccessable' => null,
-            ],
-        ];
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public static function getMethodProvider(): array
-    {
-        return [
-            'accessable method' => [
-                'isAccessable' => true,
-            ],
-            'inaccessable method' => [
-                'isAccessable' => false,
-            ],
-            'default method' => [
-                'isAccessable' => null,
-            ],
-        ];
     }
 
     /**
